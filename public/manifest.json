@@ -1,0 +1,13 @@
+{
+    "short_name": "Ribbon",
+    "name": "Ribbon-Chrome",
+    "manifest_version": 2,
+
+    "browser_action": {
+        "default_popup": "index.html",
+        "default_title": "Ribbon"
+    },
+    "permissions": ["storage", "http://*/"],
+
+    "version": "1.0"
+}

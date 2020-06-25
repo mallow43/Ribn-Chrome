@@ -1,6 +1,8 @@
 import React from 'react';
 import { IconHeader as StartPage } from '../components/IconHeader';
 import styled from 'styled-components';
+import { Layout } from '../components/Layout';
+
 const Styles = styled.div`
     &&& {
         .content {
@@ -14,14 +16,16 @@ const Styles = styled.div`
 
 export const Initial = () => {
     return (
-        <Styles>
-            <StartPage
-                header="Welcome To Ribbon"
-                subHeader="Topl Phrase"
-                buttonText="Get Started"
-                buttonUrl="setup"
-                icon="paper plane"
-            />
-        </Styles>
+        <Layout>
+            <Styles>
+                <StartPage
+                    header="Welcome To Ribbon"
+                    subHeader="Topl Phrase"
+                    buttonText="Get Started"
+                    buttonUrl="setup"
+                    icon="paper plane"
+                />
+            </Styles>
+        </Layout>
     );
 };

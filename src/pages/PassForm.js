@@ -25,6 +25,8 @@ export class PassForm extends React.Component {
         const brambljs = new BramblJS(this.state.password);
         const keyStorage = brambljs.keyManager.getKeyStorage();
         localStorage.setItem('keyStore', JSON.stringify(keyStorage));
+        const requestModule = BramblJS.Requests('http://localhost:9085/', 'topl_the_world!');
+        localStorage.setItem('requests', JSON.stringify(requestModule));
         this.props.history.push('/index.html');
     }
 

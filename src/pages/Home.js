@@ -12,12 +12,12 @@ import {
     Responsive,
     Container,
     Modal,
-    Form,
 } from 'semantic-ui-react';
+import Assets from '../components/Assets';
+import AccountDetails from '../components/AccountDetails';
 import CreateAssetsForm from '../components/TransactionForm.js';
 import muBrambl from 'mubrambl';
 import styled from 'styled-components';
-import copy from '../components/copy';
 const Styles = styled.div`
     margin: 0;
     padding: 0;
@@ -27,6 +27,8 @@ const Styles = styled.div`
     #sidebar2 {
         background-color: aliceblue;
         height: 100vh;
+        overflow: hidden !important;
+        margin: 0;
     }
     ${'' /* .segment {
         height: 40vh;
@@ -62,6 +64,7 @@ const Styles = styled.div`
     #transaction {
         margin: 20px !important;
     }
+
     &&&& {
         i.icon.copy {
             margin: 0.2em;
@@ -108,7 +111,6 @@ export class Home extends React.Component {
             };
         }
 
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
         this.handlePusher = this.handlePusher.bind(this);
@@ -122,9 +124,7 @@ export class Home extends React.Component {
         }
         this.setState({ network: { value } });
     }
-    handleSubmit() {
-        copy(keyStore.publicKeyId);
-    }
+
     handleToggle = () => {
         console.log(this.state.visible);
         this.setState({ visible: !this.state.visible });
@@ -157,21 +157,14 @@ export class Home extends React.Component {
                             animation="overlay"
                             // onHide={() => setVisible(false)}
                             overflow="hidden"
+                            dimmer
                             vertical
                             visible={this.state.visible}
                             width="thin"
                             id="sidebar2"
                         >
                             <Icon name="close" onClick={this.handlePusher} />
-                            <Header as="h2" icon textAlign="center">
-                                <Icon name="user" circular />
-                                <Header.Content>Account 1</Header.Content>
-                                <Button primary>Details</Button>
-                                <Button onClick={this.handleSubmit} size="mini">
-                                    <Icon name="copy" />
-                                    {keyStore.publicKeyId.substr(0, 5) + '...'}
-                                </Button>
-                            </Header>
+                            <AccountDetails header="h3" keyStore={keyStore} />
                         </Sidebar>
                         <Sidebar.Pusher>
                             <Responsive as={Menu} borderless fixed="top" maxWidth={992}>
@@ -182,15 +175,7 @@ export class Home extends React.Component {
 
                             <Grid>
                                 <Grid.Column only="tablet computer" id="sidebar" width="6">
-                                    <Header as="h1" icon textAlign="center">
-                                        <Icon name="user" circular />
-                                        <Header.Content>Account 1</Header.Content>
-                                        <Button primary>Details</Button>
-                                        <Button onClick={this.handleSubmit} size="mini">
-                                            <Icon name="copy" />
-                                            {keyStore.publicKeyId.substr(0, 5) + '...'}
-                                        </Button>
-                                    </Header>
+                                    <AccountDetails header="h1" keyStore={keyStore} />
                                 </Grid.Column>
 
                                 <Grid.Column width="10">
@@ -219,11 +204,10 @@ export class Home extends React.Component {
                                         }
                                         closeIcon
                                     >
-                                        <Modal.Header>Select a Transaction Method</Modal.Header>
+                                        <Modal.Header>View your assets</Modal.Header>
                                         <Modal.Content>
                                             <Modal.Description>
-                                                <CreateAssetsForm transfer={false} method="createAssetsPrototype" />
-                                                <CreateAssetsForm transfer={true} method="transferAssetsPrototype" />
+                                                <Assets />
                                             </Modal.Description>
                                         </Modal.Content>
                                     </Modal>

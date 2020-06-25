@@ -11,6 +11,7 @@ const Styles = styled.div`
 
     #JSON {
         overflow: auto !important;
+        height: 80vh;
     }
 `;
 const Styles1 = styled.div`
@@ -166,14 +167,7 @@ class CreateAssetsFormOuterComponent extends React.Component {
     render() {
         return (
             <Styles>
-                <Modal
-                    trigger={
-                        <Button padding="20px" primary>
-                            {this.props.method}
-                        </Button>
-                    }
-                    closeIcon
-                >
+                <Modal trigger={<Button primary>{this.props.method}</Button>} closeIcon>
                     <Modal.Header>{this.props.method}</Modal.Header>
                     <Modal.Content>
                         <Modal.Description>

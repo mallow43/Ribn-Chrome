@@ -170,7 +170,14 @@ class CreateAssetsFormOuterComponent extends React.Component {
     render() {
         return (
             <Styles>
-                <Modal trigger={<Button primary>{this.props.method}</Button>} closeIcon>
+                <Modal
+                    trigger={
+                        <Button fluid primary>
+                            {this.props.method}
+                        </Button>
+                    }
+                    closeIcon
+                >
                     <Modal.Header>{this.props.method}</Modal.Header>
                     <Modal.Content>
                         <Modal.Description>

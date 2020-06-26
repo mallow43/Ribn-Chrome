@@ -34,6 +34,7 @@ class NetworkDropdown extends React.Component {
     }
 
     onChange(event, { value }) {
+        console.log(value);
         if (value === 'Custom RPC') {
             this.setState({ open: true });
         }
@@ -45,14 +46,16 @@ class NetworkDropdown extends React.Component {
             localStorage.setItem('chainProvider', JSON.stringify(request));
             this.setState({ network: 'Valhalla', value: 'Valhalla' });
         }
-        if (value === 'LocalHost 9085') {
+
+        if (value === 'Localhost 9085') {
             const request = {
                 requests: BramblJS.Requests('http://localhost:9085/', 'topl_the_world!'),
-                name: 'LocalHost 9085',
+                name: 'Localhost 9085',
             };
             localStorage.setItem('chainProvider', JSON.stringify(request));
+            console.log(request);
 
-            this.setState({ network: 'LocalHost 9085', value: 'LocalHost 9085' });
+            this.setState({ network: 'Localhost 9085', value: 'Localhost 9085' });
         }
     }
     close = () => this.setState({ open: false });
@@ -63,7 +66,7 @@ class NetworkDropdown extends React.Component {
             <React.Fragment>
                 <Dropdown
                     placeholder={network}
-                    // value="LocalHost 9085"
+                    value={value}
                     onChange={this.onChange}
                     fluid
                     selection

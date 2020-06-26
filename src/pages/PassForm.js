@@ -21,12 +21,16 @@ export class PassForm extends React.Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state.password);
         const brambljs = new BramblJS(this.state.password);
         const keyStorage = brambljs.keyManager.getKeyStorage();
         localStorage.setItem('keyStore', JSON.stringify(keyStorage));
         const requestModule = BramblJS.Requests('http://localhost:9085/', 'topl_the_world!');
         localStorage.setItem('requests', JSON.stringify(requestModule));
+        const request = {
+            requests: BramblJS.Requests('http://localhost:9085/', 'topl_the_world!'),
+            name: 'LocalHost 9085',
+        };
+        localStorage.setItem('chainProvider', JSON.stringify(request));
         this.props.history.push('/index.html');
     }
 

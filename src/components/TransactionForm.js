@@ -53,8 +53,12 @@ class CreateAssetsForm extends React.Component {
                 fee: Number(fee),
             };
         }
-        console.log(this.props.method);
+        const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
         const brambljs = new BramblJS({
+            Requests: {
+                url: reqParams.requests.url,
+                apiKey: reqParams.requests.headers['x-api-key'],
+            },
             KeyManager: {
                 password: password,
                 keyStore: keyStore,
@@ -65,7 +69,6 @@ class CreateAssetsForm extends React.Component {
         });
 
         const re = localStorage.getItem('res');
-        console.log(this.props.method);
 
         const responseFormat = JSON.stringify(JSON.parse(re), null, '\t');
 

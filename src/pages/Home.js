@@ -13,6 +13,7 @@ import {
     Container,
     Modal,
 } from 'semantic-ui-react';
+import NetworkDropdown from '../components/NetworkDropdown';
 import Assets from '../components/Assets';
 import AccountDetails from '../components/AccountDetails';
 import CreateAssetsForm from '../components/TransactionForm.js';
@@ -111,29 +112,15 @@ export class Home extends React.Component {
             };
         }
 
-        this.onChange = this.onChange.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
         this.handlePusher = this.handlePusher.bind(this);
     }
-    onChange(event, { value }) {
-        const val = { value };
-        console.log(val.value);
-
-        if (val.value === 'Custom RPC') {
-            alert('Enter Your Stuff');
-        }
-        this.setState({ network: { value } });
-    }
 
     handleToggle = () => {
-        console.log(this.state.visible);
         this.setState({ visible: !this.state.visible });
     };
     handlePusher = () => {
-        console.log(this.state.visible);
-
         // const { visible } = this.state;
-        console.log(this.state);
         if (this.state.visible) this.setState({ visible: false });
     };
     render() {
@@ -142,22 +129,13 @@ export class Home extends React.Component {
         return (
             <Container>
                 <Styles>
-                    <Dropdown
-                        defaultValue={this.state.network}
-                        value={value}
-                        onChange={this.onChange}
-                        fluid
-                        name="network"
-                        selection
-                        options={networkOptions}
-                    />
+                    <NetworkDropdown />
                     <Sidebar.Pushable as={Segment}>
                         <Sidebar
                             as={Segment}
                             animation="overlay"
                             // onHide={() => setVisible(false)}
                             overflow="hidden"
-                            dimmer
                             vertical
                             visible={this.state.visible}
                             width="thin"

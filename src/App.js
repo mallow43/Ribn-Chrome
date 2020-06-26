@@ -10,9 +10,6 @@ if (typeof localStorage.getItem('keyStore') === 'string') {
 } else {
     homePage = Initial;
 }
-console.log(typeof localStorage.getItem('keyStore') === 'string');
-console.log(localStorage.getItem('keyStore'));
-console.log(homePage);
 class App extends React.Component {
     render() {
         return (

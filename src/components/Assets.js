@@ -15,13 +15,13 @@ const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 class Assets extends React.Component {
     constructor() {
         super();
-        const requests = BramblJS.Requests('http://localhost:9085/', 'topl_the_world!');
+        const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
+        const requests = BramblJS.Requests(reqParams.requests.url, reqParams.requests.headers['x-api-key']);
         requests.getBalancesByKey({ publicKeys: [keyStore.publicKeyId] }).then(function (res) {
             localStorage.setItem('res', JSON.stringify(res));
         });
 
         const re = localStorage.getItem('res');
-        global.re = localStorage.getItem('res');
         const responseFormat = JSON.stringify(JSON.parse(re), null, '\t');
         this.state = {
             key: keyStore.publicKeyId,
@@ -31,7 +31,6 @@ class Assets extends React.Component {
 
     render() {
         const { res } = this.state;
-        console.log(res);
         return (
             <React.Fragment>
                 <Styles>

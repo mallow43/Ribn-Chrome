@@ -10,6 +10,29 @@ if (typeof localStorage.getItem('keyStore') === 'string') {
 } else {
     homePage = Initial;
 }
+class HomePage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            HomePage: Initial,
+        };
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+    componentDidMount() {
+        let HomePage;
+
+        if (typeof localStorage.getItem('keyStore') === 'string') {
+            HomePage = Home;
+        } else {
+            HomePage = Initial;
+        }
+        this.setState({ HomePage: HomePage });
+    }
+    render() {
+        const { HomePage } = this.state;
+        return <HomePage />;
+    }
+}
 class App extends React.Component {
     render() {
         return (
@@ -18,7 +41,7 @@ class App extends React.Component {
                     <Switch>
                         <Route path="/setup" component={SetUp} />
                         <Route path="/password" component={PassForm} />
-                        <Route component={homePage} />;
+                        <Route component={HomePage} />;
                     </Switch>
                 </Router>
             </React.Fragment>

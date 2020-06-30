@@ -1,7 +1,6 @@
 import React from 'react';
 import { Header, Icon, Button } from 'semantic-ui-react';
 import copy from './copy';
-
 class AccountDetails extends React.Component {
     constructor() {
         super();
@@ -11,6 +10,8 @@ class AccountDetails extends React.Component {
         copy(this.props.keyStore.publicKeyId);
     }
     render() {
+        const keyStore = JSON.parse(localStorage.getItem('keyStore'));
+
         return (
             <Header as={this.props.header} icon textAlign="center">
                 <Icon name="user" circular />
@@ -18,7 +19,7 @@ class AccountDetails extends React.Component {
                 <Button primary>Details</Button>
                 <Button onClick={this.handleSubmit} size="mini">
                     <Icon name="copy" />
-                    {this.props.keyStore.publicKeyId.substr(0, 5) + '...'}
+                    {keyStore.publicKeyId.substr(0, 5) + '...'}
                 </Button>
             </Header>
         );

@@ -7,7 +7,7 @@
         "default_popup": "index.html",
         "default_title": "Ribbon"
     },
-    "permissions": ["storage", "http://*/"],
+    "permissions": ["storage", "http://*/", "https://*/"],
 
     "version": "1.0"
 }

@@ -1,22 +1,10 @@
-/* global BramblJS */
 import React from 'react';
-import {
-    Grid,
-    Segment,
-    Header,
-    Icon,
-    Button,
-    Dropdown,
-    Sidebar,
-    Menu,
-    Responsive,
-    Container,
-    Modal,
-} from 'semantic-ui-react';
+import { Grid, Segment, Header, Icon, Button, Sidebar, Menu, Responsive, Container, Modal } from 'semantic-ui-react';
 import NetworkDropdown from '../components/NetworkDropdown';
 import Assets from '../components/Assets';
 import AccountDetails from '../components/AccountDetails';
 import CreateAssetsForm from '../components/TransactionForm.js';
+// eslint-disable-next-line
 import muBrambl from 'mubrambl';
 import styled from 'styled-components';
 const Styles = styled.div`
@@ -117,8 +105,6 @@ export class Home extends React.Component {
         if (this.state.visible) this.setState({ visible: false });
     };
     render() {
-        const { value } = this.state.network;
-
         return (
             <Container>
                 <Styles>
@@ -185,7 +171,7 @@ export class Home extends React.Component {
                                     <Modal
                                         trigger={
                                             <Button fluid id="transaction" primary>
-                                                Debug
+                                                Get Chain Info
                                             </Button>
                                         }
                                         closeIcon
@@ -201,6 +187,11 @@ export class Home extends React.Component {
                             </Grid>
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>
+                    {/* <Segment inverted>
+                        <FetchData>
+                            <p>{data}</p>
+                        </FetchData>
+                    </Segment> */}
                 </Styles>
             </Container>
         );

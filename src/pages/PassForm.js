@@ -1,6 +1,7 @@
 /* global BramblJS */
 import React from 'react';
 import { Button, Checkbox, Form, Segment, Header, Container } from 'semantic-ui-react';
+// eslint-disable-next-line
 import * as Brambl from 'mubrambl';
 import { Layout } from '../components/Layout';
 
@@ -28,7 +29,7 @@ export class PassForm extends React.Component {
         localStorage.setItem('requests', JSON.stringify(requestModule));
         const request = {
             requests: BramblJS.Requests('http://localhost:9085/', 'topl_the_world!'),
-            name: 'LocalHost 9085',
+            name: 'Localhost 9085',
         };
         localStorage.setItem('chainProvider', JSON.stringify(request));
         this.props.history.push('/index.html');

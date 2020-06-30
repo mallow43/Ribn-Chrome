@@ -1,6 +1,7 @@
 /* global BramblJS */
 import React from 'react';
-import { Form, Button, Modal, Header, Segment } from 'semantic-ui-react';
+import { Form, Button, Modal, Header } from 'semantic-ui-react';
+// eslint-disable-next-line
 import muBrambl from 'mubrambl';
 import styled from 'styled-components';
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
@@ -12,11 +13,6 @@ const Styles = styled.div`
     #JSON {
         overflow: auto !important;
         height: 80vh;
-    }
-`;
-const Styles1 = styled.div`
-    #JSON {
-        overflow: auto !important;
     }
 `;
 class CreateAssetsForm extends React.Component {
@@ -32,9 +28,10 @@ class CreateAssetsForm extends React.Component {
     };
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
+    resolve = async () => {
+        let response;
 
-    handleSubmit = () => {
-        const { issuer, recipient, fee, amount, password, assetId, submitted, res } = this.state;
+        const { issuer, recipient, fee, amount, password, assetId } = this.state;
         let params = {
             issuer: issuer,
             assetCode: 'test-' + Date.now(),
@@ -42,7 +39,6 @@ class CreateAssetsForm extends React.Component {
             amount: Number(amount),
             fee: Number(fee),
         };
-
         if (this.props.transfer) {
             params = {
                 issuer: issuer,
@@ -53,6 +49,7 @@ class CreateAssetsForm extends React.Component {
                 fee: Number(fee),
             };
         }
+
         const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
         const brambljs = new BramblJS({
             Requests: {
@@ -64,21 +61,36 @@ class CreateAssetsForm extends React.Component {
                 keyStore: keyStore,
             },
         });
-        brambljs.transaction(this.props.method, params).then(function (res) {
-            localStorage.setItem('res', JSON.stringify(res));
+        await brambljs.transaction(this.props.method, params).then(function (res) {
+            response = res;
+
+            return response;
         });
+        this.setState({ res: JSON.stringify(response, null, 2) });
+    };
+    handleSubmit = () => {
+        let response;
+        this.resolve();
 
-        const re = localStorage.getItem('res');
-
-        const responseFormat = JSON.stringify(JSON.parse(re), null, '\t');
-
-        this.setState({ res: responseFormat });
+        this.setState({ res: JSON.stringify(response, null, 2) });
 
         this.setState({ submitted: true });
-
-        this.setState({ params: params });
     };
+    componentDidMount() {
+        // const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
+        // const requests = BramblJS.Requests(reqParams.requests.url, reqParams.requests.headers['x-api-key']);
+        // window.requests = requests;
+        if (this.state.submitted) {
+            let response;
 
+            this.resolve();
+
+            const responseFormat = JSON.stringify(response, null, 2);
+            this.setState({
+                res: responseFormat,
+            });
+        }
+    }
     render() {
         if (!this.state.submitted) {
             const { fee, amount, issuer, recipient, password, assetId } = this.state;
@@ -153,6 +165,7 @@ class CreateAssetsForm extends React.Component {
             );
         } else {
             const { res } = this.state;
+
             return (
                 <React.Fragment>
                     <Styles>

@@ -1,6 +1,7 @@
 /* global BramblJS */
 import React from 'react';
 import { Dropdown, Modal } from 'semantic-ui-react';
+// eslint-disable-next-line
 import * as Brambl from 'mubrambl';
 import NetworkForm from './NetworkForm';
 const networkOptions = [
@@ -24,6 +25,7 @@ const networkOptions = [
 class NetworkDropdown extends React.Component {
     constructor() {
         super();
+
         const requests = JSON.parse(localStorage.getItem('chainProvider'));
         this.state = {
             network: requests.name,
@@ -34,7 +36,6 @@ class NetworkDropdown extends React.Component {
     }
 
     onChange(event, { value }) {
-        console.log(value);
         if (value === 'Custom RPC') {
             this.setState({ open: true });
         }
@@ -53,7 +54,6 @@ class NetworkDropdown extends React.Component {
                 name: 'Localhost 9085',
             };
             localStorage.setItem('chainProvider', JSON.stringify(request));
-            console.log(request);
 
             this.setState({ network: 'Localhost 9085', value: 'Localhost 9085' });
         }
@@ -62,6 +62,7 @@ class NetworkDropdown extends React.Component {
 
     render() {
         const { value, open, network } = this.state;
+        console.log(this.state);
         return (
             <React.Fragment>
                 <Dropdown
@@ -70,6 +71,7 @@ class NetworkDropdown extends React.Component {
                     onChange={this.onChange}
                     fluid
                     selection
+                    defaultValue={network}
                     options={networkOptions}
                 />
                 <Modal closeIcon open={open} onClose={this.close}>

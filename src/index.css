@@ -21,13 +21,31 @@ html {
   /* background-color: #aefaf1; */
 }
 
+i.close.icon {
+  margin-top: 5px;
+  font-size: 1.5em;
+}
+
+h2.ui.icon.center.aligned.header {
+  margin-top: 0;
+}
+
 button.ui.button.primary {
   background-color: #00B19D;
+}
+
+div.ui.borderless.menu {
+  background-color: #def9f6;
+
 }
 
 button.ui.button.primary:hover {
   background-color: #019e8c;
 
+}
+
+div.ui.fluid.dropdown {
+  background-color: #def9f6;
 }
 
 /* div.ui.segment {

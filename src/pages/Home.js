@@ -121,7 +121,7 @@ export class Home extends React.Component {
                             // width="thin"
                             id="sidebar2"
                         >
-                            <Icon name="close" onClick={this.handlePusher} />
+                            <Icon name="close" id="side" onClick={this.handlePusher} />
                             <AccountDetails header="h2" keyStore={keyStore} />
                         </Sidebar>
                         <Sidebar.Pusher dimmed={this.state.visible}>

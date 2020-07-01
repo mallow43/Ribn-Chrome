@@ -21,7 +21,7 @@ html {
   /* background-color: #aefaf1; */
 }
 
-i.close.icon {
+i.close.icon#side {
   margin-top: 5px;
   font-size: 1.5em;
 }

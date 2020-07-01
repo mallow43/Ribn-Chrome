@@ -113,18 +113,18 @@ export class Home extends React.Component {
                     <Sidebar.Pushable as={Segment}>
                         <Sidebar
                             as={Segment}
-                            animation="overlay"
+                            animation="push"
                             // onHide={() => setVisible(false)}
                             overflow="hidden"
                             vertical
                             visible={this.state.visible}
-                            width="thin"
+                            // width="thin"
                             id="sidebar2"
                         >
                             <Icon name="close" onClick={this.handlePusher} />
-                            <AccountDetails header="h3" keyStore={keyStore} />
+                            <AccountDetails header="h2" keyStore={keyStore} />
                         </Sidebar>
-                        <Sidebar.Pusher>
+                        <Sidebar.Pusher dimmed={this.state.visible}>
                             <Responsive as={Menu} borderless fixed="top" maxWidth={992}>
                                 <Menu.Item onClick={this.handleToggle}>
                                     <Icon name="sidebar" />

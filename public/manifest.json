@@ -6,7 +6,7 @@
     "browser_action": {
         "default_popup": "index.html",
         "default_title": "Ribbon",
-        "default_icon": "topl.png"
+        "default_icon": "topl.ico"
     },
     "permissions": ["storage", "http://*/", "https://*/"],
 

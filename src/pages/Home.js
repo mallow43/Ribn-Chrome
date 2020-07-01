@@ -1,41 +1,33 @@
-/* global BramblJS */
 import React from 'react';
-import {
-    Grid,
-    Segment,
-    Header,
-    Icon,
-    Button,
-    Dropdown,
-    Sidebar,
-    Menu,
-    Responsive,
-    Container,
-    Modal,
-} from 'semantic-ui-react';
+import { Grid, Segment, Header, Icon, Button, Sidebar, Menu, Responsive, Container, Modal } from 'semantic-ui-react';
+import NetworkDropdown from '../components/NetworkDropdown';
 import Assets from '../components/Assets';
 import AccountDetails from '../components/AccountDetails';
 import CreateAssetsForm from '../components/TransactionForm.js';
+// eslint-disable-next-line
 import muBrambl from 'mubrambl';
 import styled from 'styled-components';
 const Styles = styled.div`
     margin: 0;
     padding: 0;
     #sidebar {
-        background-color: aliceblue;
+        background-color: #def9f6;
     }
+
     #sidebar2 {
-        background-color: aliceblue;
+        background-color: #def9f6;
         height: 100vh;
         overflow: hidden !important;
         margin: 0;
     }
-    ${'' /* .segment {
-        height: 40vh;
-    } */}
+
     button.ui.button {
         display: block;
         margin: 20px auto;
+    }
+
+    div.ten.wide.column {
+        padding-right: 25px;
     }
     .header {
         padding: 20px !important;
@@ -61,9 +53,9 @@ const Styles = styled.div`
         border-bottom: 0 none !important;
         box-shadow: none;
     }
-    #transaction {
-        margin: 20px !important;
-    }
+    ${'' /* #transaction {
+        margin-right: 20px !important;
+    } */}
 
     &&&& {
         i.icon.copy {
@@ -80,20 +72,11 @@ const Styles = styled.div`
         .pushable {
             width: 100%;
         }
+        i.sidebar.icon {
+            font-size: 1.5em;
+        }
     }
 `;
-const networkOptions = [
-    {
-        key: 'Localhost 9085',
-        text: 'Localhost 9085',
-        value: 'Localhost 9085',
-    },
-    {
-        key: 'Custom RPC',
-        text: 'Custom RPC',
-        value: 'Custom RPC',
-    },
-];
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 
 export class Home extends React.Component {
@@ -111,53 +94,28 @@ export class Home extends React.Component {
             };
         }
 
-        this.onChange = this.onChange.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
         this.handlePusher = this.handlePusher.bind(this);
     }
-    onChange(event, { value }) {
-        const val = { value };
-        console.log(val.value);
-
-        if (val.value === 'Custom RPC') {
-            alert('Enter Your Stuff');
-        }
-        this.setState({ network: { value } });
-    }
 
     handleToggle = () => {
-        console.log(this.state.visible);
         this.setState({ visible: !this.state.visible });
     };
     handlePusher = () => {
-        console.log(this.state.visible);
-
         // const { visible } = this.state;
-        console.log(this.state);
         if (this.state.visible) this.setState({ visible: false });
     };
     render() {
-        const { value } = this.state.network;
-
         return (
             <Container>
                 <Styles>
-                    <Dropdown
-                        defaultValue={this.state.network}
-                        value={value}
-                        onChange={this.onChange}
-                        fluid
-                        name="network"
-                        selection
-                        options={networkOptions}
-                    />
+                    <NetworkDropdown />
                     <Sidebar.Pushable as={Segment}>
                         <Sidebar
                             as={Segment}
                             animation="overlay"
                             // onHide={() => setVisible(false)}
                             overflow="hidden"
-                            dimmer
                             vertical
                             visible={this.state.visible}
                             width="thin"
@@ -173,7 +131,7 @@ export class Home extends React.Component {
                                 </Menu.Item>
                             </Responsive>
 
-                            <Grid>
+                            <Grid stackable>
                                 <Grid.Column only="tablet computer" id="sidebar" width="6">
                                     <AccountDetails header="h1" keyStore={keyStore} />
                                 </Grid.Column>
@@ -182,7 +140,7 @@ export class Home extends React.Component {
                                     <Header as="h1">Ribbon Chrome</Header>
                                     <Modal
                                         trigger={
-                                            <Button id="transaction" primary>
+                                            <Button fluid id="transaction" primary>
                                                 Initiate a Transaction
                                             </Button>
                                         }
@@ -198,7 +156,7 @@ export class Home extends React.Component {
                                     </Modal>
                                     <Modal
                                         trigger={
-                                            <Button id="transaction" primary>
+                                            <Button fluid id="transaction" primary>
                                                 View your assets
                                             </Button>
                                         }
@@ -207,7 +165,22 @@ export class Home extends React.Component {
                                         <Modal.Header>View your assets</Modal.Header>
                                         <Modal.Content>
                                             <Modal.Description>
-                                                <Assets />
+                                                <Assets getAssets />
+                                            </Modal.Description>
+                                        </Modal.Content>
+                                    </Modal>
+                                    <Modal
+                                        trigger={
+                                            <Button fluid id="transaction" primary>
+                                                Get Chain Info
+                                            </Button>
+                                        }
+                                        closeIcon
+                                    >
+                                        <Modal.Header>Test Chain Provider</Modal.Header>
+                                        <Modal.Content>
+                                            <Modal.Description>
+                                                <Assets chainInfo />
                                             </Modal.Description>
                                         </Modal.Content>
                                     </Modal>

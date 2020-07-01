@@ -4,15 +4,30 @@ import { Home } from './pages/Home';
 import { SetUp } from './pages/SetUp';
 import { Initial } from './pages/Initial';
 import { PassForm } from './pages/PassForm';
-let homePage = Initial;
-if (typeof localStorage.getItem('keyStore') === 'string') {
-    homePage = Home;
-} else {
-    homePage = Initial;
+
+class HomePage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            HomePage: Initial,
+        };
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+    componentDidMount() {
+        let HomePage;
+
+        if (typeof localStorage.getItem('keyStore') === 'string') {
+            HomePage = Home;
+        } else {
+            HomePage = Initial;
+        }
+        this.setState({ HomePage: HomePage });
+    }
+    render() {
+        const { HomePage } = this.state;
+        return <HomePage />;
+    }
 }
-console.log(typeof localStorage.getItem('keyStore') === 'string');
-console.log(localStorage.getItem('keyStore'));
-console.log(homePage);
 class App extends React.Component {
     render() {
         return (
@@ -21,7 +36,7 @@ class App extends React.Component {
                     <Switch>
                         <Route path="/setup" component={SetUp} />
                         <Route path="/password" component={PassForm} />
-                        <Route component={homePage} />;
+                        <Route component={HomePage} />;
                     </Switch>
                 </Router>
             </React.Fragment>

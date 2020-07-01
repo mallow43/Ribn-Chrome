@@ -1,9 +1,11 @@
 /* global BramblJS */
 
 import React from 'react';
-import { Header, Icon, Button, Form } from 'semantic-ui-react';
+// eslint-disable-next-line
 import muBrambl from 'mubrambl';
+import { Message } from 'semantic-ui-react';
 import styled from 'styled-components';
+
 const Styles = styled.div`
     #JSON {
         overflow: auto !important;
@@ -13,25 +15,58 @@ const Styles = styled.div`
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 
 class Assets extends React.Component {
-    constructor() {
-        super();
-        const requests = BramblJS.Requests('http://localhost:9085/', 'topl_the_world!');
-        requests.getBalancesByKey({ publicKeys: [keyStore.publicKeyId] }).then(function (res) {
-            localStorage.setItem('res', JSON.stringify(res));
-        });
+    constructor(props) {
+        super(props);
+        this.resolve = this.resolve.bind(this);
 
-        const re = localStorage.getItem('res');
-        global.re = localStorage.getItem('res');
-        const responseFormat = JSON.stringify(JSON.parse(re), null, '\t');
-        this.state = {
+        this.componentWillMount = this.componentDidMount.bind(this);
+    }
+    resolve = async () => {
+        const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
+        const requests = BramblJS.Requests(reqParams.requests.url, reqParams.requests.headers['x-api-key']);
+        let response;
+        try {
+            if (this.props.chainInfo) {
+                await requests.chainInfo().then(function (res) {
+                    response = res;
+                    return res;
+                });
+            }
+            if (this.props.getAssets) {
+                await requests.getBalancesByKey({ publicKeys: [keyStore.publicKeyId] }).then(function (res) {
+                    response = res;
+                    return res;
+                });
+            }
+        } catch (e) {
+            console.warn(e);
+            this.setState({ error: e });
+        }
+
+        this.setState({ res: JSON.stringify(response, null, 2) });
+    };
+    componentDidMount() {
+        let response;
+
+        this.resolve();
+
+        const responseFormat = JSON.stringify(response, null, 2);
+        this.setState({
             key: keyStore.publicKeyId,
             res: responseFormat,
-        };
+        });
     }
-
     render() {
-        const { res } = this.state;
-        console.log(res);
+        const { res, error } = this.state;
+        if (error) {
+            return (
+                <React.Fragment>
+                    <Styles>
+                        <Message negative>{String(error)}</Message>
+                    </Styles>
+                </React.Fragment>
+            );
+        }
         return (
             <React.Fragment>
                 <Styles>

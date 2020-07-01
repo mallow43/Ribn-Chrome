@@ -1,6 +1,7 @@
 /* global BramblJS */
 import React from 'react';
-import { Form, Button, Modal, Header, Segment } from 'semantic-ui-react';
+import { Form, Button, Modal, Header, Message } from 'semantic-ui-react';
+// eslint-disable-next-line
 import muBrambl from 'mubrambl';
 import styled from 'styled-components';
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
@@ -14,11 +15,6 @@ const Styles = styled.div`
         height: 80vh;
     }
 `;
-const Styles1 = styled.div`
-    #JSON {
-        overflow: auto !important;
-    }
-`;
 class CreateAssetsForm extends React.Component {
     state = {
         issuer: keyStore.publicKeyId,
@@ -29,127 +25,161 @@ class CreateAssetsForm extends React.Component {
         password: '',
         submitted: false,
         res: '',
+        error: undefined,
     };
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
+    resolve = async () => {
+        this.setState({ error: undefined });
+        let response;
 
-    handleSubmit = () => {
-        const { issuer, recipient, fee, amount, password, assetId, submitted, res } = this.state;
+        const { issuer, recipient, fee, amount, password, assetId } = this.state;
         let params = {
             issuer: issuer,
             assetCode: 'test-' + Date.now(),
             recipient: recipient,
             amount: Number(amount),
             fee: Number(fee),
+            error: false,
         };
-
         if (this.props.transfer) {
             params = {
                 issuer: issuer,
-                assetCode: 'test-' + assetId,
+                assetCode: assetId,
                 recipient: recipient,
                 amount: Number(amount),
                 sender: [recipient],
                 fee: Number(fee),
             };
         }
-        console.log(this.props.method);
-        const brambljs = new BramblJS({
-            KeyManager: {
-                password: password,
-                keyStore: keyStore,
-            },
-        });
-        brambljs.transaction(this.props.method, params).then(function (res) {
-            localStorage.setItem('res', JSON.stringify(res));
-        });
 
-        const re = localStorage.getItem('res');
-        console.log(this.props.method);
-
-        const responseFormat = JSON.stringify(JSON.parse(re), null, '\t');
-
-        this.setState({ res: responseFormat });
-
-        this.setState({ submitted: true });
-
-        this.setState({ params: params });
+        const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
+        let brambljs;
+        let error;
+        try {
+            brambljs = new BramblJS({
+                Requests: {
+                    url: reqParams.requests.url,
+                    apiKey: reqParams.requests.headers['x-api-key'],
+                },
+                KeyManager: {
+                    password: password,
+                    keyStore: keyStore,
+                },
+            });
+            await brambljs.transaction(this.props.method, params).then(function (res) {
+                response = res;
+            });
+            this.setState({ res: JSON.stringify(response, null, 2) });
+        } catch (e) {
+            error = e;
+        }
+        if (error) {
+            this.setState({ submitted: false, error: error });
+        } else {
+            this.setState({ submitted: true });
+        }
     };
+    handleSubmit = () => this.resolve();
 
+    componentDidMount() {
+        if (this.state.submitted) {
+            let response;
+
+            this.resolve();
+
+            const responseFormat = JSON.stringify(response, null, 2);
+
+            this.setState({
+                res: responseFormat,
+            });
+        }
+    }
     render() {
         if (!this.state.submitted) {
-            const { fee, amount, issuer, recipient, password, assetId } = this.state;
+            const { fee, amount, issuer, recipient, password, assetId, error } = this.state;
+            let ErrorMessage = () => {
+                return <p></p>;
+            };
+            if (error) {
+                ErrorMessage = () => <Message negative>{String(error)}</Message>;
+            }
             return (
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Field>
-                        <label>Issuer Key (Your Key)</label>
-                        <Form.Input
-                            placeholder="Issuer Key"
-                            name="issuer"
-                            value={issuer}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Recipient Key</label>
-                        <Form.Input
-                            placeholder="Recipient Key"
-                            name="recipient"
-                            value={recipient}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    {this.props.transfer && (
+                <React.Fragment>
+                    <ErrorMessage />
+                    <Form onSubmit={this.handleSubmit}>
                         <Form.Field>
-                            <label>Asset Id</label>
+                            <label>Issuer Key (Your Key)</label>
                             <Form.Input
-                                placeholder="Enter the asset Id of the asset you owuld like to transfer"
-                                name="assetId"
-                                value={assetId}
-                                onChange={this.handleChange}
-                            />
-                        </Form.Field>
-                    )}
-                    <Form.Field>
-                        <label>Password</label>
-                        <Form.Input
-                            placeholder="Eneter Your Password to unlock your keymanager"
-                            name="password"
-                            type="password"
-                            value={password}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    <Form.Group>
-                        <Form.Field>
-                            <label>Amount</label>
-                            <Form.Input
-                                name="amount"
-                                type="number"
-                                value={amount}
-                                placeholder="Fee"
+                                placeholder="Issuer Key"
+                                name="issuer"
+                                value={issuer}
                                 onChange={this.handleChange}
                             />
                         </Form.Field>
                         <Form.Field>
-                            <label>Fee</label>
+                            <label>Recipient Key</label>
                             <Form.Input
-                                name="fee"
-                                type="number"
-                                value={fee}
-                                placeholder="Fee"
+                                placeholder="Recipient Key"
+                                name="recipient"
+                                value={recipient}
                                 onChange={this.handleChange}
                             />
                         </Form.Field>
-                    </Form.Group>
-                    ;
-                    <Form.Field>
-                        <Button primary>Submit</Button>
-                    </Form.Field>
-                </Form>
+                        {this.props.transfer && (
+                            <Form.Field>
+                                <label>Asset Id</label>
+                                <Form.Input
+                                    placeholder="Enter the asset Id of the asset you owuld like to transfer"
+                                    name="assetId"
+                                    value={assetId}
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Field>
+                        )}
+                        <Form.Field>
+                            <label>Password</label>
+                            <Form.Input
+                                placeholder="Eneter Your Password to unlock your keymanager"
+                                name="password"
+                                type="password"
+                                value={password}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Field>
+                        <Form.Group>
+                            <Form.Field>
+                                <label>Amount</label>
+                                <Form.Input
+                                    name="amount"
+                                    type="number"
+                                    value={amount}
+                                    placeholder="Fee"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label>Fee</label>
+                                <Form.Input
+                                    name="fee"
+                                    type="number"
+                                    value={fee}
+                                    placeholder="Fee"
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Field>
+                        </Form.Group>
+                        ;
+                        <Form.Field>
+                            <Button primary>Submit</Button>
+                        </Form.Field>
+                    </Form>
+                </React.Fragment>
             );
-        } else {
+        }
+        if (this.state.submitted && !this.state.error) {
             const { res } = this.state;
+
             return (
                 <React.Fragment>
                     <Styles>
@@ -167,7 +197,14 @@ class CreateAssetsFormOuterComponent extends React.Component {
     render() {
         return (
             <Styles>
-                <Modal trigger={<Button primary>{this.props.method}</Button>} closeIcon>
+                <Modal
+                    trigger={
+                        <Button fluid primary>
+                            {this.props.method}
+                        </Button>
+                    }
+                    closeIcon
+                >
                     <Modal.Header>{this.props.method}</Modal.Header>
                     <Modal.Content>
                         <Modal.Description>

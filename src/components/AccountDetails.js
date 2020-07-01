@@ -5,10 +5,13 @@ import copy from './copy';
 class AccountDetails extends React.Component {
     constructor() {
         super();
+        this.state = {
+            keyStore: JSON.parse(localStorage.getItem('keyStore')),
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit() {
-        copy(this.props.keyStore.publicKeyId);
+        copy(this.state.keyStore.publicKeyId);
     }
     render() {
         return (
@@ -18,7 +21,7 @@ class AccountDetails extends React.Component {
                 <Button primary>Details</Button>
                 <Button onClick={this.handleSubmit} size="mini">
                     <Icon name="copy" />
-                    {this.props.keyStore.publicKeyId.substr(0, 5) + '...'}
+                    {this.state.keyStore.publicKeyId.substr(0, 5) + '...'}
                 </Button>
             </Header>
         );

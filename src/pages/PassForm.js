@@ -1,6 +1,7 @@
 /* global BramblJS */
 import React from 'react';
 import { Button, Checkbox, Form, Segment, Header, Container } from 'semantic-ui-react';
+// eslint-disable-next-line
 import * as Brambl from 'mubrambl';
 import { Layout } from '../components/Layout';
 
@@ -21,12 +22,16 @@ export class PassForm extends React.Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state.password);
         const brambljs = new BramblJS(this.state.password);
         const keyStorage = brambljs.keyManager.getKeyStorage();
         localStorage.setItem('keyStore', JSON.stringify(keyStorage));
         const requestModule = BramblJS.Requests('http://localhost:9085/', 'topl_the_world!');
         localStorage.setItem('requests', JSON.stringify(requestModule));
+        const request = {
+            requests: BramblJS.Requests('http://localhost:9085/', 'topl_the_world!'),
+            name: 'Localhost 9085',
+        };
+        localStorage.setItem('chainProvider', JSON.stringify(request));
         this.props.history.push('/index.html');
     }
 
@@ -55,7 +60,9 @@ export class PassForm extends React.Component {
                             <Form.Field>
                                 <Checkbox required label="I agree to the Terms and Conditions" />
                             </Form.Field>
-                            <Button type="submit">Submit</Button>
+                            <Button primary type="submit">
+                                Submit
+                            </Button>
                         </Form>
                     </Segment>
                 </Container>

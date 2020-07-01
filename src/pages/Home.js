@@ -11,10 +11,11 @@ const Styles = styled.div`
     margin: 0;
     padding: 0;
     #sidebar {
-        background-color: aliceblue;
+        background-color: #def9f6;
     }
+
     #sidebar2 {
-        background-color: aliceblue;
+        background-color: #def9f6;
         height: 100vh;
         overflow: hidden !important;
         margin: 0;
@@ -187,11 +188,6 @@ export class Home extends React.Component {
                             </Grid>
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>
-                    {/* <Segment inverted>
-                        <FetchData>
-                            <p>{data}</p>
-                        </FetchData>
-                    </Segment> */}
                 </Styles>
             </Container>
         );

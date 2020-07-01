@@ -17,7 +17,9 @@ class NetworkForm extends React.Component {
             requests: requests,
             name: name,
         };
+        console.log(requestsObj);
         localStorage.setItem('chainProvider', JSON.stringify(requestsObj));
+        this.props.onSubmit();
     };
     render() {
         const { key, name, url } = this.state;

@@ -60,7 +60,9 @@ export class PassForm extends React.Component {
                             <Form.Field>
                                 <Checkbox required label="I agree to the Terms and Conditions" />
                             </Form.Field>
-                            <Button type="submit">Submit</Button>
+                            <Button primary type="submit">
+                                Submit
+                            </Button>
                         </Form>
                     </Segment>
                 </Container>

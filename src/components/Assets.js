@@ -3,6 +3,7 @@
 import React from 'react';
 // eslint-disable-next-line
 import muBrambl from 'mubrambl';
+import { Message } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -24,17 +25,22 @@ class Assets extends React.Component {
         const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
         const requests = BramblJS.Requests(reqParams.requests.url, reqParams.requests.headers['x-api-key']);
         let response;
-        if (this.props.chainInfo) {
-            await requests.chainInfo().then(function (res) {
-                response = res;
-                return res;
-            });
-        }
-        if (this.props.getAssets) {
-            await requests.getBalancesByKey({ publicKeys: [keyStore.publicKeyId] }).then(function (res) {
-                response = res;
-                return res;
-            });
+        try {
+            if (this.props.chainInfo) {
+                await requests.chainInfo().then(function (res) {
+                    response = res;
+                    return res;
+                });
+            }
+            if (this.props.getAssets) {
+                await requests.getBalancesByKey({ publicKeys: [keyStore.publicKeyId] }).then(function (res) {
+                    response = res;
+                    return res;
+                });
+            }
+        } catch (e) {
+            console.warn(e);
+            this.setState({ error: e });
         }
 
         this.setState({ res: JSON.stringify(response, null, 2) });
@@ -51,8 +57,16 @@ class Assets extends React.Component {
         });
     }
     render() {
-        const { res } = this.state;
-
+        const { res, error } = this.state;
+        if (error) {
+            return (
+                <React.Fragment>
+                    <Styles>
+                        <Message negative>{String(error)}</Message>
+                    </Styles>
+                </React.Fragment>
+            );
+        }
         return (
             <React.Fragment>
                 <Styles>

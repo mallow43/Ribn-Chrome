@@ -4,12 +4,7 @@ import { Home } from './pages/Home';
 import { SetUp } from './pages/SetUp';
 import { Initial } from './pages/Initial';
 import { PassForm } from './pages/PassForm';
-let homePage = Initial;
-if (typeof localStorage.getItem('keyStore') === 'string') {
-    homePage = Home;
-} else {
-    homePage = Initial;
-}
+
 class HomePage extends React.Component {
     constructor(props) {
         super(props);

@@ -24,6 +24,7 @@ export const Initial = () => {
                     buttonText="Get Started"
                     buttonUrl="setup"
                     icon="paper plane"
+                    svg
                 />
             </Styles>
         </Layout>

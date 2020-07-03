@@ -11,11 +11,11 @@ const Styles = styled.div`
     margin: 0;
     padding: 0;
     #sidebar {
-        background-color: #def9f6;
+        background-color: #f4fcfb;
     }
 
     #sidebar2 {
-        background-color: #def9f6;
+        background-color: #f4fcfb;
         height: 100vh;
         overflow: hidden !important;
         margin: 0;

@@ -3,6 +3,8 @@ import { Header, Icon } from 'semantic-ui-react';
 import NavButton from './NavButton';
 export const IconHeader = (props) => (
     <Header as="h1" icon textAlign="center">
+        {/* {props.svg && <i className="topl-icon icon"></i>} */}
+
         <Icon name={props.icon} />
         <Header.Content>{props.header}</Header.Content>
         <Header.Subheader>{props.subHeader}</Header.Subheader>

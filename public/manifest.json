@@ -6,10 +6,14 @@
     "browser_action": {
         "default_popup": "index.html",
         "default_title": "Ribbon",
-        "default_icon": "topl.ico"
+        "default_icon": "topl.png"
     },
-
-    "content_security_policy": "script-src 'self' 'sha256-WOdSzz11/3cpqOdrm89LBL2UPwEU9EhbDtMy2OciEhs='; object-src 'self'",
+    "icons": {
+        "16": "topl.png",
+        "48": "topl.png",
+        "128": "topl.png"
+    },
+    "content_security_policy": "script-src 'self' 'sha256-bUKmZpTgO61QXYiOGjdWNyNrSMSVtaHMPaZFt+rEZi4='; object-src 'self'",
 
     "permissions": ["storage", "http://*/", "https://*/"],
 

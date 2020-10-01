@@ -3,10 +3,9 @@ import { Grid, Segment, Header, Icon, Button, Sidebar, Menu, Responsive, Contain
 import NetworkDropdown from '../components/NetworkDropdown';
 import Assets from '../components/Assets';
 import AccountDetails from '../components/AccountDetails';
-import CreateAssetsForm from '../components/TransactionForm.js';
-// eslint-disable-next-line
-import muBrambl from 'mubrambl';
+import CreateAssetsForm from '../components/TransactionForm.jsx';
 import styled from 'styled-components';
+import InfoMenu from '../components/infoMenu';
 const Styles = styled.div`
     margin: 0;
     padding: 0;
@@ -177,13 +176,14 @@ export class Home extends React.Component {
                                         }
                                         closeIcon
                                     >
-                                        <Modal.Header>Test Chain Provider</Modal.Header>
+                                        <Modal.Header>Chain Info</Modal.Header>
                                         <Modal.Content>
                                             <Modal.Description>
                                                 <Assets chainInfo />
                                             </Modal.Description>
                                         </Modal.Content>
                                     </Modal>
+                                    <InfoMenu />
                                 </Grid.Column>
                             </Grid>
                         </Sidebar.Pusher>

@@ -1,8 +1,6 @@
 /* global BramblJS */
 import React from 'react';
 import { Dropdown, Modal } from 'semantic-ui-react';
-// eslint-disable-next-line
-import * as Brambl from 'mubrambl';
 import NetworkForm from './NetworkForm';
 let networkOptions = [
     {

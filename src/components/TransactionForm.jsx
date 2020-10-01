@@ -1,8 +1,6 @@
 /* global BramblJS */
 import React from 'react';
 import { Form, Button, Modal, Header, Message } from 'semantic-ui-react';
-// eslint-disable-next-line
-import muBrambl from 'mubrambl';
 import styled from 'styled-components';
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 const Styles = styled.div`

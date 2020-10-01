@@ -1,41 +1,52 @@
 /* global BramblJS */
 import React from 'react';
 import { Button, Checkbox, Form, Segment, Header, Container } from 'semantic-ui-react';
-// eslint-disable-next-line
-import * as Brambl from 'mubrambl';
 import { Layout } from '../components/Layout';
 
 export class PassForm extends React.Component {
-    constructor() {
-        super();
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.state = {
-            password: '',
-        };
-    }
-    onChange(event) {
+    state = {
+        password: '',
+        loading: false,
+    };
+
+    onChange = (event) => {
         if (event.target.value === 'Custom RPC') {
             alert('Custom SetUp');
         }
         this.setState({ password: event.target.value });
-    }
-    handleSubmit(event) {
-        event.preventDefault();
-        const brambljs = new BramblJS(this.state.password);
-        const keyStorage = brambljs.keyManager.getKeyStorage();
-        localStorage.setItem('keyStore', JSON.stringify(keyStorage));
-        const requestModule = BramblJS.Requests('http://localhost:9085/', 'topl_the_world!');
-        localStorage.setItem('requests', JSON.stringify(requestModule));
-        const request = {
-            requests: BramblJS.Requests('http://localhost:9085/', 'topl_the_world!'),
-            name: 'Localhost 9085',
-        };
-        localStorage.setItem('chainProvider', JSON.stringify(request));
-        this.props.history.push('/index.html');
-    }
+    };
+    setLoading = (l) => {
+        this.setState({ loading: l });
+    };
+
+    handleSubmit = (evt) => {
+        evt.preventDefault();
+        this.setLoading(true);
+        const pass = this.state.password;
+        new Promise(() =>
+            setTimeout(() => {
+                let brambljs = new BramblJS(pass);
+                const keyStorage = brambljs.keyManager.getKeyStorage();
+                localStorage.setItem('keyStore', JSON.stringify(keyStorage));
+
+                let requestModule = BramblJS.Requests('http://localhost:9085/', 'topl_the_world!');
+
+                localStorage.setItem('requests', JSON.stringify(requestModule));
+
+                const request = {
+                    requests: BramblJS.Requests('http://localhost:9085/', 'topl_the_world!'),
+                    name: 'Localhost 9085',
+                };
+                localStorage.setItem('chainProvider', JSON.stringify(request));
+                this.setLoading(false);
+                this.props.history.push('/index.html');
+            }, 1),
+        );
+    };
 
     render() {
+        let { password, loading } = this.state;
+        console.log(loading);
         return (
             <Layout>
                 <Container text>
@@ -43,7 +54,10 @@ export class PassForm extends React.Component {
                         <Header id="header" size="huge">
                             Please Enter a Password to Encrypt Your KeyStore
                         </Header>
-                        <Form onSubmit={this.handleSubmit}>
+
+                        <p>{String(loading)}</p>
+
+                        <Form onSubmit={this.handleSubmit.bind(this)} loading={loading}>
                             <Form.Field>
                                 <label>New Password</label>
                                 <input
@@ -54,7 +68,7 @@ export class PassForm extends React.Component {
                                     id="password"
                                     name="password"
                                     placeholder="New Password"
-                                    value={this.state.password}
+                                    value={password}
                                 />
                             </Form.Field>
                             <Form.Field>

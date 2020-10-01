@@ -1,11 +1,11 @@
 {
-    "short_name": "Ribbon",
-    "name": "Ribbon-Chrome",
+    "short_name": "Ribn",
+    "name": "Ribn-Chrome",
     "manifest_version": 2,
 
     "browser_action": {
         "default_popup": "index.html",
-        "default_title": "Ribbon",
+        "default_title": "Ribn",
         "default_icon": "topl.png"
     },
     "icons": {

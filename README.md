@@ -1,4 +1,4 @@
-# Ribbon-Chrome Browser Extension
+# Ribn-Chrome Browser Extension
 
 ## Building locally
 

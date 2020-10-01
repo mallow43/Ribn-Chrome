@@ -136,7 +136,7 @@ export class Home extends React.Component {
                                 </Grid.Column>
 
                                 <Grid.Column width="10">
-                                    <Header as="h1">Ribbon Chrome</Header>
+                                    <Header as="h1">Ribn-Chrome</Header>
                                     <Modal
                                         trigger={
                                             <Button fluid id="transaction" primary>

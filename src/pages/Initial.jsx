@@ -19,7 +19,7 @@ export const Initial = () => {
         <Layout>
             <Styles>
                 <StartPage
-                    header="Welcome To Ribbon"
+                    header="Welcome To Ribn"
                     subHeader="Topl Phrase"
                     buttonText="Get Started"
                     buttonUrl="setup"

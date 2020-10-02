@@ -10,6 +10,9 @@ const Styles = styled.div`
         overflow: auto !important;
         height: 80vh;
     }
+    #table {
+        width: 100%;
+    }
 `;
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 
@@ -23,21 +26,16 @@ class Assets extends React.Component {
     resolve = async () => {
         const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
         const requests = BramblJS.Requests(reqParams.requests.url, reqParams.requests.headers['x-api-key']);
-        console.log(requests);
-        console.log(reqParams);
         let response;
         try {
             if (this.props.chainInfo) {
                 await requests.chainInfo().then(function (res) {
-                    console.log(res);
-
                     response = res.result;
                     return res;
                 });
             }
             if (this.props.getAssets) {
                 await requests.getBalancesByKey({ publicKeys: [keyStore.publicKeyId] }).then(function (res) {
-                    console.log(res);
                     let key = keyStore.publicKeyId;
                     response = res.result[key];
                     return res;
@@ -45,28 +43,17 @@ class Assets extends React.Component {
             }
         } catch (e) {
             console.warn(e);
-            console.log(e);
+
             this.setState({ error: e });
         }
-        console.log(response);
-        this.setState({ res: JSON.stringify(response, null, 2), resp: Object.entries(response) });
+
+        this.setState({ resp: Object.entries(response) });
     };
     componentDidMount() {
-        let response;
-
         this.resolve();
-
-        const responseFormat = JSON.stringify(response, null, 2);
-        console.log('res');
-        console.log(responseFormat);
-        this.setState({
-            key: keyStore.publicKeyId,
-            res: responseFormat,
-        });
     }
     render() {
-        console.log(this.state);
-        const { res, error, resp } = this.state;
+        const { error, resp } = this.state;
         if (error) {
             return (
                 <React.Fragment>

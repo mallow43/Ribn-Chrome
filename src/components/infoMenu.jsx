@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Menu, Segment } from 'semantic-ui-react';
-import Assets from './infoAssets';
-import Activity from './infoActivity';
+import { Menu } from 'semantic-ui-react';
+import Assets from './InfoAssets';
+import Activity from './InfoActivity';
 export default class MenuExampleSecondaryPointing extends Component {
     state = { activeItem: 'assets' };
 

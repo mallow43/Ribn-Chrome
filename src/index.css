@@ -9,24 +9,38 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+table {
+    padding-top: 0px;
+}
 
 body,
 html {
     margin: 0;
-    height: 600px;
+    height: 100%;
+
     overflow: hidden;
 
     /* background-color: #aefaf1; */
 }
-@media only screen and (max-width: 300px) {
+.ui.message:last-child {
+    margin-bottom: 14px;
+}
+#asset-list {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+@media only screen and (max-width: 400px) {
     body,
     html {
         margin: 0;
         height: 600px;
         overflow: hidden;
-        height: 100%;
 
         /* background-color: #aefaf1; */
+    }
+    #asset-list {
+        max-height: 160px;
+        overflow-y: scroll;
     }
 }
 

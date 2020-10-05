@@ -50,7 +50,7 @@ export class PassForm extends React.Component {
         return (
             <Layout>
                 <Container text>
-                    <Segment>
+                    <Segment id="home">
                         <Header id="header" size="huge">
                             Please Enter a Password to Encrypt Your KeyStore
                         </Header>

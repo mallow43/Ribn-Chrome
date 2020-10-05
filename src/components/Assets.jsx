@@ -21,9 +21,14 @@ class Assets extends React.Component {
         super();
         this.resolve = this.resolve.bind(this);
         this.state = { resp: [] };
-        this.componentWillMount = this.componentDidMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
+    setLoading = () => {
+        console.log('switched');
+        this.setState({ loading: !this.state.loading });
+    };
     resolve = async () => {
+        this.setLoading();
         const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
         const requests = BramblJS.Requests(reqParams.requests.url, reqParams.requests.headers['x-api-key']);
         let response;
@@ -36,6 +41,7 @@ class Assets extends React.Component {
             }
             if (this.props.getAssets) {
                 await requests.getBalancesByKey({ publicKeys: [keyStore.publicKeyId] }).then(function (res) {
+                    console.log(res);
                     let key = keyStore.publicKeyId;
                     response = res.result[key];
                     return res;
@@ -43,9 +49,10 @@ class Assets extends React.Component {
             }
         } catch (e) {
             console.warn(e);
-
+            console.log(e);
             this.setState({ error: e });
         }
+        this.setLoading();
 
         this.setState({ resp: Object.entries(response) });
     };

@@ -24,10 +24,17 @@ class CreateAssetsForm extends React.Component {
         submitted: false,
         res: '',
         error: undefined,
+        loading: false,
     };
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
+    setLoading = () => {
+        console.log('switched');
+        this.setState({ loading: !this.state.loading });
+    };
     resolve = async () => {
+        console.log(this.state);
+
         this.setState({ error: undefined });
         let response;
 
@@ -52,10 +59,9 @@ class CreateAssetsForm extends React.Component {
         }
 
         const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
-        let brambljs;
-        let error;
+
         try {
-            brambljs = new BramblJS({
+            let brambljs = new BramblJS({
                 Requests: {
                     url: reqParams.requests.url,
                     apiKey: reqParams.requests.headers['x-api-key'],
@@ -65,47 +71,39 @@ class CreateAssetsForm extends React.Component {
                     keyStore: keyStore,
                 },
             });
+            // new Promise(()=>
+            // )
             await brambljs.transaction(this.props.method, params).then(function (res) {
                 response = res;
             });
-            this.setState({ res: JSON.stringify(response, null, 2) });
+            console.log(response);
+            this.setState({ res: JSON.stringify(response, null, 2), submitted: true });
         } catch (e) {
-            error = e;
+            this.setState({ submitted: false, error: e });
         }
-        if (error) {
-            this.setState({ submitted: false, error: error });
-        } else {
-            this.setState({ submitted: true });
-        }
+
+        this.setLoading();
+        console.log(this.state);
     };
-    handleSubmit = () => this.resolve();
+    handleSubmit = () => {
+        this.setLoading();
 
-    componentDidMount() {
-        if (this.state.submitted) {
-            let response;
+        this.resolve();
+    };
 
-            this.resolve();
-
-            const responseFormat = JSON.stringify(response, null, 2);
-
-            this.setState({
-                res: responseFormat,
-            });
-        }
-    }
     render() {
         if (!this.state.submitted) {
-            const { fee, amount, issuer, recipient, password, assetId, error } = this.state;
+            const { fee, amount, issuer, recipient, password, assetId, error, loading } = this.state;
             let ErrorMessage = () => {
                 return <p></p>;
             };
             if (error) {
-                ErrorMessage = () => <Message negative>{String(error)}</Message>;
+                ErrorMessage = () => <Message negative>{String(error.message)}</Message>;
             }
             return (
                 <React.Fragment>
                     <ErrorMessage />
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form loading={loading} onSubmit={this.handleSubmit}>
                         <Form.Field>
                             <label>Issuer Key (Your Key)</label>
                             <Form.Input

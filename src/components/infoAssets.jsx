@@ -3,8 +3,8 @@
 import React from 'react';
 import { Loader, Message } from 'semantic-ui-react';
 import styled from 'styled-components';
-import { List, Segment } from 'semantic-ui-react';
-
+import { List } from 'semantic-ui-react';
+import AssetsPage from './AssetsDetails';
 const Styles = styled.div`
     #JSON {
         overflow: auto !important;
@@ -16,17 +16,20 @@ const Styles = styled.div`
     }
 `;
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
+function PolyDetails() {
+    return <p>Polys</p>;
+}
 
+function ArbitDetails() {
+    return <p>Arbits</p>;
+}
 class Assets extends React.Component {
-    constructor(props) {
-        super();
-        this.resolve = this.resolve.bind(this);
-        this.state = {
-            resp: [],
-            loading: false,
-        };
-        this.componentDidMount = this.componentDidMount.bind(this);
-    }
+    state = {
+        resp: [],
+        loading: false,
+        clicked: false,
+    };
+
     setLoading = () => {
         this.setState({ loading: !this.state.loading });
     };
@@ -58,16 +61,25 @@ class Assets extends React.Component {
             ['Assets', response.Boxes.asset || 0],
         ];
         console.log(arr);
+
         this.setState({
             resp: arr,
+            response: response,
         });
     };
     componentDidMount() {
         this.resolve();
     }
+    clicked = (section) => {
+        this.setState({ clicked: true });
+        this.setState({ clickedComponent: this.state.resp[section][0] });
+
+        console.log(section);
+    };
     render() {
         console.log(this.state);
-        const { error, resp } = this.state;
+
+        const { error, resp, clicked, clickedComponent } = this.state;
         if (error) {
             return (
                 <React.Fragment>
@@ -76,15 +88,27 @@ class Assets extends React.Component {
                     </Styles>
                 </React.Fragment>
             );
-        } else if (this.ready) {
         }
+        if (clicked) {
+            console.log(this.state);
+            if (clickedComponent === 'Assets') {
+                return <AssetsPage resp={this.state.response} />;
+            }
+            if (clickedComponent === 'Arbits') {
+                return <ArbitDetails />;
+            }
+            if (clickedComponent === 'Polys') {
+                return <PolyDetails />;
+            }
+        }
+
         return (
             <React.Fragment>
                 <Styles>
                     <div>
                         <List divided verticalAlign="middle">
                             {resp.map((pair) => (
-                                <List.Item key={resp.indexOf(pair)}>
+                                <List.Item onClick={() => this.clicked(resp.indexOf(pair))} key={resp.indexOf(pair)}>
                                     <List.Content floated="right">
                                         <List.Description as="p">{pair[1]}</List.Description>
                                     </List.Content>

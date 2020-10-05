@@ -109,7 +109,7 @@ export class Home extends React.Component {
             <Container>
                 <Styles>
                     <NetworkDropdown />
-                    <Sidebar.Pushable as={Segment}>
+                    <Sidebar.Pushable as={Segment} id="home">
                         <Sidebar
                             as={Segment}
                             animation="push"

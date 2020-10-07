@@ -46,7 +46,7 @@ export class PassForm extends React.Component {
 
     render() {
         let { password, loading } = this.state;
-        console.log(loading);
+
         return (
             <Layout>
                 <Container text>

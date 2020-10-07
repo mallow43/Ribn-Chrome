@@ -12,7 +12,10 @@ code {
 table {
     padding-top: 0px;
 }
-
+#copy:hover {
+    color: rgb(63, 63, 63);
+    cursor: pointer;
+}
 body,
 html {
     margin: 0;
@@ -21,6 +24,9 @@ html {
     overflow: hidden;
 
     /* background-color: #aefaf1; */
+}
+.pointer:hover {
+    cursor: pointer;
 }
 .ui.message:last-child {
     margin-bottom: 14px;
@@ -31,6 +37,10 @@ html {
 } */
 .ui.modal .content > .description {
     padding: 0 !important;
+}
+#asset-list {
+    max-height: 300px;
+    overflow-y: auto;
 }
 @media only screen and (max-width: 400px) {
     body,

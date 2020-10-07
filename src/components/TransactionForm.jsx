@@ -29,12 +29,9 @@ class CreateAssetsForm extends React.Component {
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
     setLoading = () => {
-        console.log('switched');
         this.setState({ loading: !this.state.loading });
     };
     resolve = async () => {
-        console.log(this.state);
-
         this.setState({ error: undefined });
         let response;
 
@@ -76,14 +73,13 @@ class CreateAssetsForm extends React.Component {
             await brambljs.transaction(this.props.method, params).then(function (res) {
                 response = res;
             });
-            console.log(response);
+
             this.setState({ res: JSON.stringify(response, null, 2), submitted: true });
         } catch (e) {
             this.setState({ submitted: false, error: e });
         }
 
         this.setLoading();
-        console.log(this.state);
     };
     handleSubmit = () => {
         this.setLoading();

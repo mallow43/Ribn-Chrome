@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
-import Assets from './InfoAssets';
-import Activity from './InfoActivity';
-export default class MenuExampleSecondaryPointing extends Component {
-    state = { activeItem: 'assets' };
+import { Menu, Loader } from 'semantic-ui-react';
+import Assets from './AssetMenu';
+import Activity from './Activity';
+export default class InfoMenu extends Component {
+    state = { activeItem: 'assets', clicked: false };
 
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name });
-
+    handleItemClick = (e, { name }) => {
+        this.setState({ activeItem: name, clicked: !this.state.clicked });
+    };
+    componentDidMount = () => {
+        setInterval(() => {
+            this.setState({ clicked: !this.state.clicked });
+        }, 30000);
+    };
     render() {
         const { activeItem } = this.state;
 
@@ -18,8 +24,7 @@ export default class MenuExampleSecondaryPointing extends Component {
                 </Menu>
 
                 {/* <Segment> */}
-
-                {this.state.activeItem === 'assets' && <Assets />}
+                {this.state.activeItem === 'assets' && <Assets key={this.state.clicked} />}
                 {this.state.activeItem === 'activity' && <Activity />}
                 {/* </Segment> */}
             </div>

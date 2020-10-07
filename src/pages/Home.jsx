@@ -5,7 +5,7 @@ import Assets from '../components/Assets';
 import AccountDetails from '../components/AccountDetails';
 import CreateAssetsForm from '../components/TransactionForm.jsx';
 import styled from 'styled-components';
-import InfoMenu from '../components/infoMenu';
+import InfoMenu from '../components/InfoMenu';
 const Styles = styled.div`
     margin: 0;
     padding: 0;
@@ -137,6 +137,9 @@ export class Home extends React.Component {
 
                                 <Grid.Column width="10">
                                     <Header as="h1">Ribn-Chrome</Header>
+                                    {/* <Button fluid id="transaction" primary>
+                                        Initiate a Transaction
+                                    </Button> */}
                                     <Modal
                                         trigger={
                                             <Button fluid id="transaction" primary>

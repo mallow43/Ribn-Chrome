@@ -24,7 +24,6 @@ class Assets extends React.Component {
         this.componentDidMount = this.componentDidMount.bind(this);
     }
     setLoading = () => {
-        console.log('switched');
         this.setState({ loading: !this.state.loading });
     };
     resolve = async () => {
@@ -41,7 +40,6 @@ class Assets extends React.Component {
             }
             if (this.props.getAssets) {
                 await requests.getBalancesByKey({ publicKeys: [keyStore.publicKeyId] }).then(function (res) {
-                    console.log(res);
                     let key = keyStore.publicKeyId;
                     response = res.result[key];
                     return res;

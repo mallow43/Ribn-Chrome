@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Loader } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 import Assets from './AssetMenu';
 import Activity from './Activity';
 export default class InfoMenu extends Component {

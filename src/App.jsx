@@ -37,9 +37,11 @@ class App extends React.Component {
             <React.Fragment>
                 <Router>
                     <Switch>
-                        <Route path="/setup" component={SetUp} />
-                        <Route path="/password" component={PassForm} />
-                        <Route component={HomePage} />;
+                        <div id="bendy-corners">
+                            <Route path="/setup" component={SetUp} />
+                            <Route path="/password" component={PassForm} />
+                            <Route component={HomePage} />
+                        </div>
                     </Switch>
                 </Router>
             </React.Fragment>

@@ -137,9 +137,6 @@ export class Home extends React.Component {
 
                                 <Grid.Column width="10">
                                     <Header as="h1">Ribn-Chrome</Header>
-                                    {/* <Button fluid id="transaction" primary>
-                                        Initiate a Transaction
-                                    </Button> */}
                                     <Modal
                                         trigger={
                                             <Button fluid id="transaction" primary>

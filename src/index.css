@@ -48,13 +48,34 @@ html {
         margin: 0;
         height: 600px;
         overflow: hidden;
-
+        background-color: black;
         /* background-color: #aefaf1; */
     }
     #asset-list {
         max-height: 160px;
         overflow-y: scroll;
     }
+    @media only screen and (max-height: 600px) {
+        body,
+        html {
+            background-color: black;
+        }
+        #bendy-corners {
+            border-radius: 3px;
+            width: 100%;
+            height: 600px;
+            background-color: white;
+        }
+    }
+}
+.visible.transition {
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.modals.dimmer .ui.scrolling.modal {
+    margin: 0 !important;
 }
 
 #list-header,

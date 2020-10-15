@@ -54,7 +54,6 @@ html {
 div.content > .ui.form {
     font-size: 1rem;
     padding: 5px;
-    margin-top: 10px;
 }
 
 @media only screen and (max-width: 400px) {
@@ -141,33 +140,3 @@ button.ui.button.primary:hover {
 #netDrop {
     background-color: #dff1ef;
 }
-
-/* div.ui.segment {
-  background-color: black;
-  border: 2px solid #00B19D;
-}
-
-.header {
-  color: white !important;
-
-}
-
-button.ui.button.primary {
-  color: #00B19D;
-  /* border: 4px solid #00B19D */
-/* }
-
-.ui.menu,
-.item {
-  color: #00B19D !important;
-  background-color: black;
-
-}
-
-.six.wide.column {
-  border-right: 2px solid #00B19D;
-}
-
-button.ui.button.primary:hover {
-  color: #00B19D
-} */

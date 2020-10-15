@@ -3,11 +3,12 @@
 import React from 'react';
 import { Grid, Segment, Header, Icon, Button, Sidebar, Menu, Responsive, Container, Modal } from 'semantic-ui-react';
 import NetworkDropdown from '../components/NetworkDropdown';
-import Assets from '../components/Assets';
+import GetChainInfo from '../components/GetChainInfo';
 import AccountDetails from '../components/AccountDetails';
 import TransactionForm from '../components/TransactionFormMain.jsx';
 import styled from 'styled-components';
 import InfoMenu from '../components/InfoMenu';
+// import CreateAssetForm from '../components/CreateAssetsForm';
 const Styles = styled.div`
     margin: 0;
     padding: 0;
@@ -54,9 +55,6 @@ const Styles = styled.div`
         border-bottom: 0 none !important;
         box-shadow: none;
     }
-    ${'' /* #transaction {
-        margin-right: 20px !important;
-    } */}
 
     &&&& {
         i.icon.copy {
@@ -199,31 +197,22 @@ export class Home extends React.Component {
                                                 closeIcon
                                                 open={this.state.transModalActive}
                                             >
-                                                {/* <Modal.Header>Enter Recipient Key</Modal.Header> */}
-                                                {/* <Modal.Content> */}
-                                                {/* <Modal.Description>
-                                                <CreateAssetsForm transfer={false} method="createAssetsPrototype" />
-                                                <CreateAssetsForm transfer={true} method="transferAssetsPrototype" />
-                                            </Modal.Description> */}
                                                 <TransactionForm
                                                     response={this.state.response}
                                                     transModal={this.transModal}
                                                 />
-                                                {/* </Modal.Content> */}
                                             </Modal>
                                             <Modal
                                                 trigger={
                                                     <Button fluid id="transaction" primary>
-                                                        View your assets
+                                                        Create an Asset
                                                     </Button>
                                                 }
                                                 closeIcon
                                             >
                                                 <Modal.Header>View your assets</Modal.Header>
                                                 <Modal.Content>
-                                                    <Modal.Description>
-                                                        <Assets getAssets />
-                                                    </Modal.Description>
+                                                    <TransactionForm createAssets={true} />
                                                 </Modal.Content>
                                             </Modal>
                                             <Modal
@@ -237,7 +226,7 @@ export class Home extends React.Component {
                                                 <Modal.Header>Chain Info</Modal.Header>
                                                 <Modal.Content>
                                                     <Modal.Description>
-                                                        <Assets chainInfo />
+                                                        <GetChainInfo chainInfo />
                                                     </Modal.Description>
                                                 </Modal.Content>
                                             </Modal>

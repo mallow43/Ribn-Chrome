@@ -3,6 +3,7 @@
 import React from 'react';
 import ParamsForm from './ParamsForm';
 import TransferConfirm from './TransferConfirm';
+import CreateAssetForm from './CreateAssetForm';
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 
 export default class MainTransForm extends React.Component {
@@ -17,8 +18,6 @@ export default class MainTransForm extends React.Component {
     };
 
     handleChange = (e, { name, value }) => {
-        console.log(value);
-        console.log(name);
         let formArr = this.state.formArr;
         if (name === 'Asset') {
             if (value === 'assets') {
@@ -58,15 +57,11 @@ export default class MainTransForm extends React.Component {
             console.log(this.state.params);
             await brambljs.transaction(method, this.state.params).then(function (res) {
                 response = res;
-                console.log(res);
             });
-            console.log(response);
 
-            console.log(response);
             this.setState({ transResp: response });
         } catch (e) {
             console.log(e);
-            console.log('e');
             this.setState({ error: e });
         }
         if (!this.state.error) {
@@ -74,13 +69,21 @@ export default class MainTransForm extends React.Component {
         }
     };
     handleSubmit = () => {
-        console.log(this.state);
-        const { recipient, fee, amount, sender, assetDets, Asset } = this.state;
+        const { recipient, fee, amount, sender, assetDets, Asset, issuer, assetCode } = this.state;
         let params;
         if (this.state.formState === 0) {
             this.setState({ formState: this.state.formState + 1 });
-
-            if (Asset === 'assets') {
+            console.log('{}{}{}{}{}{{');
+            console.log(this.props.createAssets);
+            if (this.props.createAssets) {
+                params = {
+                    issuer: issuer,
+                    assetCode: assetCode,
+                    recipient: recipient,
+                    amount: Number(amount),
+                    fee: Number(fee),
+                };
+            } else if (Asset === 'assets') {
                 params = {
                     issuer: assetDets.issuer,
                     assetCode: assetDets.assetCode,
@@ -98,12 +101,18 @@ export default class MainTransForm extends React.Component {
                     fee: Number(fee),
                 };
             }
+            console.log(params);
+
             this.setState({ params: params });
         }
 
         if (this.state.formState === 1) {
             if (this.state.Asset === 'assets') {
                 this.resolve('transferAssetsPrototype');
+            }
+            if (this.props.createAssets) {
+                console.log(this.state);
+                this.resolve('createAssetsPrototype');
             }
             if (this.state.Asset === 'polys') {
                 this.resolve('transferPolys');
@@ -120,6 +129,15 @@ export default class MainTransForm extends React.Component {
         if (formState === 0) {
             console.log('|||||');
             console.log(this.props.response);
+            if (this.props.createAssets) {
+                return (
+                    <CreateAssetForm
+                        error={this.state.error}
+                        handleChange={this.handleChange}
+                        handleSubmit={this.handleSubmit}
+                    />
+                );
+            }
             return (
                 <ParamsForm
                     handleChange={this.handleChange}
@@ -140,6 +158,7 @@ export default class MainTransForm extends React.Component {
                     cancelClick={this.props.transModal}
                     type={this.state.Asset}
                     error={this.state.error}
+                    createAssets={this.props.createAssets}
                 />
             );
         }

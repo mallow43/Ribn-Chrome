@@ -64,21 +64,29 @@ export default class Params extends React.Component {
                             </Form.Field>
                         );
                     })}
-                    <Form.Group>
-                        <Form.Field>
-                            <label>Amount</label>
-                            <Form.Input
-                                name="amount"
-                                type="number"
-                                placeholder="Fee"
-                                onChange={this.props.handleChange}
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>Fee</label>
-                            <Form.Input name="fee" type="number" placeholder="Fee" onChange={this.props.handleChange} />
-                        </Form.Field>
-                    </Form.Group>
+                    <Form.Field>
+                        <Form.Group>
+                            <Form.Field>
+                                <label>Amount</label>
+                                <Form.Input
+                                    name="amount"
+                                    type="number"
+                                    placeholder="Fee"
+                                    onChange={this.props.handleChange}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label>Fee</label>
+                                <Form.Input
+                                    name="fee"
+                                    type="number"
+                                    placeholder="Fee"
+                                    onChange={this.props.handleChange}
+                                />
+                            </Form.Field>
+                        </Form.Group>
+                    </Form.Field>
+
                     <Form.Field>
                         <Button primary>Submit</Button>
                     </Form.Field>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Modal, Dropdown, Message } from 'semantic-ui-react';
+import { Form, Button, Modal, Dropdown } from 'semantic-ui-react';
 const options = [
     { key: 1, text: 'Assets', value: 'assets' },
     { key: 2, text: 'Polys', value: 'polys' },
@@ -7,8 +7,10 @@ const options = [
 ];
 export default class Params extends React.Component {
     render() {
-        const { loading, formArr, response, error } = this.props;
+        const { loading, formArr, response } = this.props;
         let opt = [];
+
+        // eslint-disable-next-line array-callback-return
         response.map((ass) => {
             opt.push({
                 key: response.indexOf(ass),

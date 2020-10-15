@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { List, Modal } from 'semantic-ui-react';
+import { List, Modal, HeaderSubheader } from 'semantic-ui-react';
 import Copy from './copyFull';
 class Assets extends React.Component {
     render() {
@@ -37,6 +37,7 @@ class Assets extends React.Component {
                                                         pair[0] === 'assetCode' ||
                                                         pair[0] === 'type'
                                                     ) {
+                                                        // eslint-disable-next-line array-callback-return
                                                         return;
                                                     }
                                                     if (pair[1].length > 20) {
@@ -74,7 +75,7 @@ class Assets extends React.Component {
                 </div>
             );
         } else {
-            return <p>No Assets</p>;
+            return <HeaderSubheader>No Assets</HeaderSubheader>;
         }
     }
 }

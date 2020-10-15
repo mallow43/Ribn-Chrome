@@ -3,7 +3,6 @@
 import React from 'react';
 import ParamsForm from './ParamsForm';
 import TransferConfirm from './TransferConfirm';
-import { Loader, Segment, Dimmer, Modal } from 'semantic-ui-react';
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 
 export default class MainTransForm extends React.Component {

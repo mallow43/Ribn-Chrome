@@ -17,7 +17,7 @@ export default class Confirm extends React.Component {
                             />
                         </Grid.Column>
 
-                        <Grid.Column width={2} centered size="large">
+                        <Grid.Column width={2} size="large">
                             <Icon name="angle double right" />
                         </Grid.Column>
                         <Grid.Column textAlign="center">

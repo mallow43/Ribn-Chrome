@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Modal } from 'semantic-ui-react';
+import { List, Modal, HeaderSubheader } from 'semantic-ui-react';
 import Copy from './copyFull';
 export default class Arbits extends React.Component {
     render() {
@@ -31,6 +31,7 @@ export default class Arbits extends React.Component {
                                                 let long;
 
                                                 if (arb[0] === 'data' || arb[0] === 'assetCode') {
+                                                    // eslint-disable-next-line array-callback-return
                                                     return;
                                                 }
                                                 if (arb[1].length > 20) {
@@ -65,7 +66,7 @@ export default class Arbits extends React.Component {
                 </React.Fragment>
             );
         } else {
-            return <p>No {this.props.type}s.</p>;
+            return <HeaderSubheader>No {this.props.type}s</HeaderSubheader>;
         }
     }
 }

@@ -24,7 +24,16 @@ export default class InfoMenu extends Component {
                 </Menu>
 
                 {/* <Segment> */}
-                {this.state.activeItem === 'assets' && <Assets key={this.state.clicked} />}
+                {this.state.activeItem === 'assets' && (
+                    <Assets
+                        key={this.state.clicked}
+                        resolve={this.props.resolve}
+                        error={this.props.error}
+                        loading={this.props.loading}
+                        response={this.props.response}
+                        resp={this.props.resp}
+                    />
+                )}
                 {this.state.activeItem === 'activity' && <Activity />}
                 {/* </Segment> */}
             </div>

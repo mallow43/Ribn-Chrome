@@ -1,5 +1,8 @@
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
+import jQuery from 'jquery';
+import 'semantic-ui-css/semantic.min.css';
+// eslint-disable-next-line no-unused-vars
 import Brambl from 'mubrambl';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -37,11 +40,9 @@ class App extends React.Component {
             <React.Fragment>
                 <Router>
                     <Switch>
-                        <div id="bendy-corners">
-                            <Route path="/setup" component={SetUp} />
-                            <Route path="/password" component={PassForm} />
-                            <Route component={HomePage} />
-                        </div>
+                        <Route path="/setup" component={SetUp} />
+                        <Route path="/password" component={PassForm} />
+                        <Route component={HomePage} />
                     </Switch>
                 </Router>
             </React.Fragment>

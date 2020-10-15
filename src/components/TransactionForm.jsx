@@ -73,14 +73,13 @@ class CreateAssetsForm extends React.Component {
             await brambljs.transaction(this.props.method, params).then(function (res) {
                 response = res;
             });
-            console.log(response);
+
             this.setState({ res: JSON.stringify(response, null, 2), submitted: true });
         } catch (e) {
             this.setState({ submitted: false, error: e });
         }
 
         this.setLoading();
-        console.log(this.state);
     };
     handleSubmit = () => {
         this.setLoading();
@@ -97,6 +96,7 @@ class CreateAssetsForm extends React.Component {
             if (error) {
                 ErrorMessage = () => <Message negative>{String(error.message)}</Message>;
             }
+
             return (
                 <React.Fragment>
                     <ErrorMessage />

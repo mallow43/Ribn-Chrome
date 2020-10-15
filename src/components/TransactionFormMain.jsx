@@ -1,107 +1,151 @@
+/* global BramblJS */
+
 import React from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import ParamsForm from './ParamsForm';
+import TransferConfirm from './TransferConfirm';
+import { Loader, Segment, Dimmer, Modal } from 'semantic-ui-react';
 const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 
 export default class MainTransForm extends React.Component {
     state = {
-        issuer: keyStore.publicKeyId,
-        recipient: '',
-        fee: 0,
-        amount: 0,
-        params: {},
-        password: '',
-        submitted: false,
-        res: '',
-        error: undefined,
-        loading: false,
+        formState: 0,
+        formArr: [
+            { title: 'Recipient Key', type: 'text', name: 'recipient' },
+            { title: 'Password', type: 'password', name: 'password' },
+            { title: 'Sender', type: 'text', name: 'sender' },
+        ],
+        loading: true,
     };
-    handleChange = (e, { name, value }) => this.setState({ [name]: value });
-    hadleSubmit = () => {
-        const { issuer, recipient, fee, amount, password, assetId } = this.state;
-        let params = {
-            issuer: issuer,
-            assetCode: 'test-' + Date.now(),
-            recipient: recipient,
-            amount: Number(amount),
-            fee: Number(fee),
-            error: false,
-        };
-        if (this.props.transfer) {
-            params = {
-                issuer: issuer,
-                assetCode: assetId,
-                recipient: recipient,
-                amount: Number(amount),
-                sender: [recipient],
-                fee: Number(fee),
-            };
+
+    handleChange = (e, { name, value }) => {
+        console.log(value);
+        console.log(name);
+        let formArr = this.state.formArr;
+        if (name === 'Asset') {
+            if (value === 'assets') {
+                formArr.push({ title: 'AssetCode', type: 'text', name: 'assetCode' });
+                console.log(formArr);
+            } else {
+                formArr.forEach(function (form) {
+                    if (form.name === 'issuer' || form.name === 'assetCode') {
+                        formArr.splice(formArr.indexOf(form));
+                    }
+                });
+            }
+        }
+        this.setState({ formArr: formArr });
+
+        this.setState({ [name]: value });
+    };
+    resolve = async (method) => {
+        const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
+        let response;
+        console.log(reqParams);
+
+        try {
+            let brambljs = new BramblJS({
+                Requests: {
+                    url: reqParams.requests.url,
+                    apiKey: reqParams.requests.headers['x-api-key'],
+                },
+                KeyManager: {
+                    password: this.state.password,
+                    keyStore: keyStore,
+                },
+            });
+            // new Promise(()=>
+            // )
+            console.log(brambljs);
+            console.log(this.state.params);
+            await brambljs.transaction(method, this.state.params).then(function (res) {
+                response = res;
+                console.log(res);
+            });
+            console.log(response);
+
+            console.log(response);
+            this.setState({ transResp: response });
+        } catch (e) {
+            console.log(e);
+            console.log('e');
+            this.setState({ error: e });
+        }
+        if (!this.state.error) {
+            this.props.transModal(false);
         }
     };
-    render() {
-        const { issuer, recipient, fee, amount, password, assetId, loading } = this.state;
+    handleSubmit = () => {
+        console.log(this.state);
+        const { recipient, fee, amount, sender, assetDets, Asset } = this.state;
+        let params;
+        if (this.state.formState === 0) {
+            this.setState({ formState: this.state.formState + 1 });
 
-        return (
-            <Form loading={loading} onSubmit={this.handleSubmit}>
-                <Form.Field>
-                    <label>Issuer Key (Your Key)</label>
-                    <Form.Input placeholder="Issuer Key" name="issuer" value={issuer} onChange={this.handleChange} />
-                </Form.Field>
-                <Form.Field>
-                    <label>Recipient Key</label>
-                    <Form.Input
-                        placeholder="Recipient Key"
-                        name="recipient"
-                        value={recipient}
-                        onChange={this.handleChange}
-                    />
-                </Form.Field>
-                {this.props.transfer && (
-                    <Form.Field>
-                        <label>Asset Id</label>
-                        <Form.Input
-                            placeholder="Enter the asset Id of the asset you owuld like to transfer"
-                            name="assetId"
-                            value={assetId}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                )}
-                <Form.Field>
-                    <label>Password</label>
-                    <Form.Input
-                        placeholder="Eneter Your Password to unlock your keymanager"
-                        name="password"
-                        type="password"
-                        value={password}
-                        onChange={this.handleChange}
-                    />
-                </Form.Field>
-                <Form.Group>
-                    <Form.Field>
-                        <label>Amount</label>
-                        <Form.Input
-                            name="amount"
-                            type="number"
-                            value={amount}
-                            placeholder="Fee"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Fee</label>
-                        <Form.Input
-                            name="fee"
-                            type="number"
-                            value={fee}
-                            placeholder="Fee"
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                </Form.Group>
-                <Form.Field>
-                    <Button primary>Submit</Button>
-                </Form.Field>
-            </Form>
-        );
+            if (Asset === 'assets') {
+                params = {
+                    issuer: assetDets.issuer,
+                    assetCode: assetDets.assetCode,
+                    recipient: recipient,
+                    amount: Number(amount),
+                    sender: [sender],
+                    fee: Number(fee),
+                };
+                console.log(params);
+            } else {
+                params = {
+                    recipient: recipient,
+                    amount: Number(amount),
+                    sender: [sender],
+                    fee: Number(fee),
+                };
+            }
+            this.setState({ params: params });
+        }
+
+        if (this.state.formState === 1) {
+            if (this.state.Asset === 'assets') {
+                this.resolve('transferAssetsPrototype');
+            }
+            if (this.state.Asset === 'polys') {
+                this.resolve('transferPolys');
+            }
+            if (this.state.Asset === 'arbits') {
+                this.resolve('transferArbits');
+            }
+        }
+    };
+
+    render() {
+        //  const { issuer, recipient, fee, amount, password, assetId, loading, formState } = this.state;
+        const { formState } = this.state;
+        if (formState === 0) {
+            console.log('|||||');
+            console.log(this.props.response);
+            return (
+                <ParamsForm
+                    handleChange={this.handleChange}
+                    handleSubmit={this.handleSubmit}
+                    formArr={this.state.formArr}
+                    response={this.props.response.Boxes.Asset}
+                    error={this.state.error}
+                    type={this.state.Asset}
+                />
+            );
+        }
+
+        if (formState === 1) {
+            return (
+                <TransferConfirm
+                    handleSubmit={this.handleSubmit}
+                    params={this.state.params}
+                    cancelClick={this.props.transModal}
+                    type={this.state.Asset}
+                    error={this.state.error}
+                />
+            );
+        }
+        if (formState === 2) {
+            return <p>{JSON.stringify(this.state.transResp)}</p>;
+        }
     }
 }

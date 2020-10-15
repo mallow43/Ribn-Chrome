@@ -55,8 +55,6 @@ export class PassForm extends React.Component {
                             Please Enter a Password to Encrypt Your KeyStore
                         </Header>
 
-                        <p>{String(loading)}</p>
-
                         <Form onSubmit={this.handleSubmit.bind(this)} loading={loading}>
                             <Form.Field>
                                 <label>New Password</label>

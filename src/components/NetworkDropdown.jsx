@@ -95,6 +95,7 @@ class NetworkDropdown extends React.Component {
         return (
             <React.Fragment>
                 <Dropdown
+                    id="netDrop"
                     placeholder={network}
                     value={value}
                     onChange={this.onChange}

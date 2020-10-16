@@ -13,7 +13,6 @@
         "48": "topl.png",
         "128": "topl.png"
     },
-    "content_security_policy": "script-src 'self' 'sha256-bUKmZpTgO61QXYiOGjdWNyNrSMSVtaHMPaZFt+rEZi4='; object-src 'self'",
 
     "permissions": ["storage", "http://*/", "https://*/"],
 

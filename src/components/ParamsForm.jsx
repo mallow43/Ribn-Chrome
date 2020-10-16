@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Modal, Dropdown } from 'semantic-ui-react';
+import { Form, Button, Modal, Dropdown, Header } from 'semantic-ui-react';
 const options = [
     { key: 1, text: 'Assets', value: 'assets' },
     { key: 2, text: 'Polys', value: 'polys' },
@@ -10,15 +10,30 @@ export default class Params extends React.Component {
         const { loading, formArr, response } = this.props;
         let opt = [];
 
-        // eslint-disable-next-line array-callback-return
-        response.map((ass) => {
-            opt.push({
-                key: response.indexOf(ass),
-                text: String(ass.assetCode),
-                description: String(ass.value),
-                value: { issuer: ass.issuer, assetCode: ass.assetCode },
+        console.log(response);
+        if (!response) {
+            return (
+                <Modal.Content>
+                    <Header as="h1">
+                        No Assets to Transfer
+                        <Header.Subheader>Go make one</Header.Subheader>
+                    </Header>
+                </Modal.Content>
+            );
+        }
+        if (response) {
+            // eslint-disable-next-line array-callback-return
+            response.map((ass) => {
+                opt.push({
+                    key: response.indexOf(ass),
+                    text: String(ass.assetCode),
+                    description: String(ass.value),
+                    value: { issuer: ass.issuer, assetCode: ass.assetCode },
+                });
             });
-        });
+        } else {
+            opt = [{ text: 'No Assets to transfer', key: '1' }];
+        }
 
         return (
             <Modal.Content>

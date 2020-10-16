@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form, Button, Modal, Dropdown } from 'semantic-ui-react';
+import { Form, Button, Modal } from 'semantic-ui-react';
 
 export default class Params extends React.Component {
     render() {
-        const { loading, response } = this.props;
+        const { loading } = this.props;
 
         return (
             <Modal.Content>

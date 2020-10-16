@@ -57,7 +57,15 @@ div.content > .ui.form {
     font-size: 1rem;
     padding: 5px;
 }
-
+.ui.fluid.accordion,
+.ui.fluid.accordion .accordion {
+    border-top: 3px solid #00b19d;
+    border-radius: 10px !important;
+}
+.ui.active.modal {
+    border: 3px solid #00b19d;
+    border-radius: 10px !important;
+}
 @media only screen and (max-width: 400px) {
     body,
     html {

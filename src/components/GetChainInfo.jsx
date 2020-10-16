@@ -56,6 +56,7 @@ export default class GetChainInfo extends React.Component {
                 if (typeof pair[1][0] === 'object') {
                     pair[1] = pair[1][0];
                 }
+                // eslint-disable-next-line array-callback-return
                 Object.entries(pair[1]).map((p) => {
                     console.log(p);
 
@@ -85,6 +86,7 @@ export default class GetChainInfo extends React.Component {
             }
             return content;
         };
+        // eslint-disable-next-line array-callback-return
         resp.map((pair) => {
             let content = innerObjDetect(pair);
             if (content.length > 20) {

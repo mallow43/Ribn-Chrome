@@ -1,10 +1,9 @@
 /* global BramblJS */
 
 import React from 'react';
-import { Message } from 'semantic-ui-react';
 import styled from 'styled-components';
-import { Header, Table } from 'semantic-ui-react';
-
+import { Message, Accordion } from 'semantic-ui-react';
+import CopyFull from './copyFull';
 const Styles = styled.div`
     #JSON {
         overflow: auto !important;
@@ -48,6 +47,60 @@ export default class GetChainInfo extends React.Component {
     };
     render() {
         const { error, resp } = this.state;
+        let panels = [];
+        let innerObjDetect = (pair) => {
+            let content = String(pair[1]);
+            if ((typeof pair[1] === 'object' && !Array.isArray(pair[1])) || typeof pair[1][0] === 'object') {
+                let innerPanels = [];
+                console.log(pair);
+                if (typeof pair[1][0] === 'object') {
+                    pair[1] = pair[1][0];
+                }
+                Object.entries(pair[1]).map((p) => {
+                    console.log(p);
+
+                    let cont = innerObjDetect(p);
+
+                    console.log(cont);
+                    if (cont.length > 20) {
+                        cont = cont.substr(0, 10) + '...';
+                    }
+                    let c = { content: <CopyFull elem={cont} text={innerObjDetect(p)} /> };
+                    if (p[0] === 'txs') {
+                        c = { content: cont };
+                    }
+
+                    innerPanels.push({
+                        key: pair.indexOf(p),
+                        title: String(p[0]),
+                        content: c,
+                    });
+                });
+                // content = <Accordion.Accordion panels={innerPanels} styled fluid />;
+                content = (
+                    <div>
+                        <Accordion.Accordion panels={innerPanels} />
+                    </div>
+                );
+            }
+            return content;
+        };
+        resp.map((pair) => {
+            let content = innerObjDetect(pair);
+            if (content.length > 20) {
+                content = content.substr(0, 10) + '...';
+            }
+            let c = { content: <CopyFull elem={content} text={innerObjDetect(pair)} /> };
+            if (pair[0] === 'bestBlock') {
+                c = { content: content };
+            }
+            panels.push({
+                key: resp.indexOf(pair),
+                title: String(pair[0]),
+                content: c,
+            });
+        });
+
         if (error) {
             return (
                 <React.Fragment>
@@ -60,21 +113,7 @@ export default class GetChainInfo extends React.Component {
         return (
             <React.Fragment>
                 <Styles>
-                    <Table fixed id="table" basic="very" singleLine celled collapsing>
-                        <Table.Body>
-                            {/* <p>{res}</p> */}
-                            {resp.map((pair) => (
-                                <Table.Row key={resp.indexOf(pair)}>
-                                    <Table.Cell>
-                                        <Header as="h4" image>
-                                            <Header.Content>{pair[0]}</Header.Content>
-                                        </Header>
-                                    </Table.Cell>
-                                    <Table.Cell>{String(pair[1])}</Table.Cell>
-                                </Table.Row>
-                            ))}
-                        </Table.Body>
-                    </Table>
+                    <Accordion defaultActiveIndex={0} panels={panels} styled fluid />
                 </Styles>
             </React.Fragment>
         );

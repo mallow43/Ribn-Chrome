@@ -20,7 +20,7 @@ export class PassForm extends React.Component {
     };
 
     handleSubmit = (evt) => {
-        evt.preventDefault();
+        // evt.preventDefault();
         this.setLoading(true);
         const pass = this.state.password;
         new Promise(() =>
@@ -50,7 +50,7 @@ export class PassForm extends React.Component {
         return (
             <Layout>
                 <Container text>
-                    <Segment id="home">
+                    <Segment id="home" className="padd">
                         <Header id="header" size="huge">
                             Please Enter a Password to Encrypt Your KeyStore
                         </Header>

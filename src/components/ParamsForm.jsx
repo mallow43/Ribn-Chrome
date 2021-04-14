@@ -7,11 +7,11 @@ const options = [
 ];
 export default class Params extends React.Component {
     render() {
-        const { loading, formArr, response } = this.props;
+        const { loading, formArr, response, createAssets } = this.props;
         let opt = [];
 
         console.log(response);
-        if (!response) {
+        if (!response && !createAssets) {
             return (
                 <Modal.Content>
                     <Header as="h1">
@@ -103,7 +103,9 @@ export default class Params extends React.Component {
                     </Form.Field>
 
                     <Form.Field>
-                        <Button primary>Submit</Button>
+                        <Button className="formButton" primary>
+                            Submit
+                        </Button>
                     </Form.Field>
                 </Form>
             </Modal.Content>

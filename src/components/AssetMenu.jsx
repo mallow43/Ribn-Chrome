@@ -28,7 +28,12 @@ class Assets extends React.Component {
         if (error) {
             return (
                 <React.Fragment>
-                    <Message negative>{String(error)}</Message>
+                    <Message negative>
+                        {String(error)}
+                        <button className="ui button small marg" onClick={this.props.resolve}>
+                            Retry
+                        </button>
+                    </Message>
                 </React.Fragment>
             );
         }

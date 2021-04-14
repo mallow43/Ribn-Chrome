@@ -8,9 +8,6 @@ const Styles = styled.div`
         .content {
             padding: 1.2vw;
         }
-        .button {
-            margin: 1.2vw;
-        }
     }
 `;
 

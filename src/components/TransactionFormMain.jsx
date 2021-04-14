@@ -146,6 +146,7 @@ export default class MainTransForm extends React.Component {
                     response={this.props.response.Boxes.Asset}
                     error={this.state.error}
                     type={this.state.Asset}
+                    createAssets={this.props.createAssets}
                 />
             );
         }

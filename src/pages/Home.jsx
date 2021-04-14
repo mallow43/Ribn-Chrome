@@ -6,77 +6,9 @@ import NetworkDropdown from '../components/NetworkDropdown';
 import GetChainInfo from '../components/GetChainInfo';
 import AccountDetails from '../components/AccountDetails';
 import TransactionForm from '../components/TransactionFormMain.jsx';
-import styled from 'styled-components';
+
 import InfoMenu from '../components/InfoMenu';
 // import CreateAssetForm from '../components/CreateAssetsForm';
-const Styles = styled.div`
-    margin: 0;
-    padding: 0;
-    #sidebar {
-        background-color: #f4fcfb;
-    }
-
-    #sidebar2 {
-        background-color: #f4fcfb;
-        height: 100vh;
-        overflow: hidden !important;
-        margin: 0;
-    }
-
-    button.ui.button {
-        display: block;
-        margin: 20px auto;
-    }
-
-    div.ten.wide.column {
-        padding-right: 25px;
-    }
-    .header {
-        padding: 20px !important;
-    }
-    button.ui.mini {
-        padding: 3px;
-    }
-    .pusher {
-        max-width: 100%;
-        margin: 0;
-    }
-
-    .ui.segment {
-        padding: 0;
-    }
-    .blankSegment {
-        background: white;
-    }
-    .dropdown {
-        margin-bottom: 10px !important;
-    }
-    .ui.menu {
-        border-bottom: 0 none !important;
-        box-shadow: none;
-    }
-
-    &&&& {
-        i.icon.copy {
-            margin: 0.2em;
-            font-size: inherit;
-            display: inline;
-        }
-
-        .pushable {
-            margin: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-        .pushable {
-            width: 100%;
-        }
-        i.sidebar.icon {
-            font-size: 1.5em;
-        }
-    }
-`;
-const keyStore = JSON.parse(localStorage.getItem('keyStore'));
 
 export class Home extends React.Component {
     constructor() {
@@ -90,12 +22,15 @@ export class Home extends React.Component {
             clicked: false,
             error: false,
             transModalActive: false,
+            transModalActive2: false,
+            keyStore: JSON.parse(localStorage.getItem('keyStore')),
         };
 
         this.handleToggle = this.handleToggle.bind(this);
         this.handlePusher = this.handlePusher.bind(this);
     }
     resolve = async () => {
+        const keyStore = this.state.keyStore;
         const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
         const requests = BramblJS.Requests(reqParams.requests.url, reqParams.requests.headers['x-api-key']);
         let response;
@@ -139,6 +74,9 @@ export class Home extends React.Component {
     transModal = (state) => {
         this.setState({ transModalActive: state });
     };
+    transModal2 = (state) => {
+        this.setState({ transModalActive2: state });
+    };
     handleToggle = () => {
         this.setState({ visible: !this.state.visible });
     };
@@ -147,101 +85,107 @@ export class Home extends React.Component {
         if (this.state.visible) this.setState({ visible: false });
     };
     render() {
+        let keyStore = this.state.keyStore;
         return (
             <div id="bendy-background">
                 <div id="bendy-corners">
                     <Container>
-                        <Styles>
-                            <NetworkDropdown />
-                            <Sidebar.Pushable as={Segment} id="home">
-                                <Sidebar
-                                    as={Segment}
-                                    animation="push"
-                                    // onHide={() => setVisible(false)}
-                                    overflow="hidden"
-                                    vertical
-                                    visible={this.state.visible}
-                                    // width="thin"
-                                    id="sidebar2"
-                                >
-                                    <Icon name="close" id="side" onClick={this.handlePusher} />
-                                    <AccountDetails header="h2" keyStore={keyStore} />
-                                </Sidebar>
-                                <Sidebar.Pusher dimmed={this.state.visible}>
-                                    <Responsive as={Menu} borderless fixed="top" maxWidth={992}>
-                                        <Menu.Item onClick={this.handleToggle}>
-                                            <Icon name="sidebar" />
-                                        </Menu.Item>
-                                    </Responsive>
+                        <NetworkDropdown />
+                        <Sidebar.Pushable as={Segment} id="home">
+                            <Sidebar
+                                as={Segment}
+                                animation="push"
+                                // onHide={() => setVisible(false)}
+                                overflow="hidden"
+                                vertical
+                                visible={this.state.visible}
+                                // width="thin"
+                                id="sidebar2"
+                            >
+                                <Icon name="close" id="side" onClick={this.handlePusher} />
+                                <AccountDetails header="h2" keyStore={keyStore} />
+                            </Sidebar>
+                            <Sidebar.Pusher dimmed={this.state.visible}>
+                                <Responsive id="menu" as={Menu} borderless fixed="top" maxWidth={992}>
+                                    <Menu.Item onClick={this.handleToggle}>
+                                        <Icon name="sidebar" />
+                                    </Menu.Item>
+                                </Responsive>
 
-                                    <Grid stackable>
-                                        <Grid.Column only="tablet computer" id="sidebar" width="6">
-                                            <AccountDetails header="h1" keyStore={keyStore} />
-                                        </Grid.Column>
+                                <Grid stackable>
+                                    <Grid.Column only="tablet computer" id="sidebar" width="6">
+                                        <AccountDetails header="h1" keyStore={keyStore} />
+                                    </Grid.Column>
 
-                                        <Grid.Column width="10">
-                                            <Header as="h1">Ribn-Chrome</Header>
-                                            <Modal
-                                                onClose={() => this.transModal(false)}
-                                                onOpen={() => this.transModal(true)}
-                                                trigger={
-                                                    <Button
-                                                        onClick={() => this.transModal(true)}
-                                                        fluid
-                                                        id="transaction"
-                                                        primary
-                                                    >
-                                                        Transfer An Asset
-                                                    </Button>
-                                                }
-                                                closeIcon
-                                                open={this.state.transModalActive}
-                                            >
-                                                <TransactionForm
-                                                    response={this.state.response}
-                                                    transModal={this.transModal}
-                                                />
-                                            </Modal>
-                                            <Modal
-                                                trigger={
-                                                    <Button fluid id="transaction" primary>
-                                                        Create an Asset
-                                                    </Button>
-                                                }
-                                                closeIcon
-                                            >
-                                                <Modal.Header>View your assets</Modal.Header>
-                                                <Modal.Content>
-                                                    <TransactionForm createAssets={true} />
-                                                </Modal.Content>
-                                            </Modal>
-                                            <Modal
-                                                trigger={
-                                                    <Button fluid id="transaction" primary>
-                                                        Get Chain Info
-                                                    </Button>
-                                                }
-                                                closeIcon
-                                            >
-                                                <Modal.Header>Chain Info</Modal.Header>
-                                                <Modal.Content>
-                                                    <Modal.Description>
-                                                        <GetChainInfo chainInfo />
-                                                    </Modal.Description>
-                                                </Modal.Content>
-                                            </Modal>
-                                            <InfoMenu
-                                                resolve={this.resolve}
-                                                loading={this.state.loading}
+                                    <Grid.Column width="10">
+                                        <Header as="h1">Ribn-Chrome</Header>
+                                        <Modal
+                                            onClose={() => this.transModal(false)}
+                                            onOpen={() => this.transModal(true)}
+                                            trigger={
+                                                <Button
+                                                    onClick={() => this.transModal(true)}
+                                                    fluid
+                                                    id="transaction"
+                                                    primary
+                                                >
+                                                    Transfer An Asset
+                                                </Button>
+                                            }
+                                            closeIcon
+                                            open={this.state.transModalActive}
+                                        >
+                                            <TransactionForm
                                                 response={this.state.response}
-                                                resp={this.state.resp}
-                                                error={this.state.error}
+                                                transModal={this.transModal}
                                             />
-                                        </Grid.Column>
-                                    </Grid>
-                                </Sidebar.Pusher>
-                            </Sidebar.Pushable>
-                        </Styles>
+                                        </Modal>
+                                        <Modal
+                                            trigger={
+                                                <Button
+                                                    fluid
+                                                    id="transaction"
+                                                    onClick={() => this.transModal2(true)}
+                                                    primary
+                                                >
+                                                    Create an Asset
+                                                </Button>
+                                            }
+                                            open={this.state.transModalActive2}
+                                            onClose={() => this.transModal2(false)}
+                                            onOpen={() => this.transModal2(true)}
+                                            closeIcon
+                                        >
+                                            <Modal.Content>
+                                                <TransactionForm createAssets transModal={this.transModal2} />
+                                            </Modal.Content>
+                                        </Modal>
+                                        <Modal
+                                            trigger={
+                                                <Button fluid id="transaction" primary>
+                                                    Get Chain Info
+                                                </Button>
+                                            }
+                                            closeIcon
+                                        >
+                                            <Modal.Header>Chain Info</Modal.Header>
+                                            <Modal.Content>
+                                                <Modal.Description>
+                                                    <GetChainInfo chainInfo />
+                                                </Modal.Description>
+                                            </Modal.Content>
+                                        </Modal>
+                                        <InfoMenu
+                                            resolve={this.resolve}
+                                            loading={this.state.loading}
+                                            response={this.state.response}
+                                            resp={this.state.resp}
+                                            error={this.state.error}
+                                        />
+                                    </Grid.Column>
+                                </Grid>
+                            </Sidebar.Pusher>
+                        </Sidebar.Pushable>
                     </Container>
                 </div>
             </div>

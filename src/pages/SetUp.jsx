@@ -21,7 +21,7 @@ export const SetUp = () => (
                         <IconHeader
                             header="No, I Have a Keystore"
                             buttonText="Import KeyStore"
-                            buttonUrl="form"
+                            buttonUrl="import"
                             icon="cloud upload"
                         />
                     </Segment>

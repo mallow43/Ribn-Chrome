@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { SetUp } from './pages/SetUp';
 import { Initial } from './pages/Initial';
+import Import from './pages/Import';
 import { PassForm } from './pages/PassForm';
 
 class HomePage extends React.Component {
@@ -42,6 +43,7 @@ class App extends React.Component {
                     <Switch>
                         <Route path="/setup" component={SetUp} />
                         <Route path="/password" component={PassForm} />
+                        <Route path="/import" component={Import} />
                         <Route component={HomePage} />
                     </Switch>
                 </Router>

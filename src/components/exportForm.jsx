@@ -1,8 +1,8 @@
 /* global BramblJS */
 
 import React from 'react';
-import { Header, Form, Button, Modal } from 'semantic-ui-react';
-import Copy from './copyFull';
+import { Form, Button, Modal } from 'semantic-ui-react';
+
 export default class exportForm extends React.Component {
     state = {
         loading: false,
@@ -12,6 +12,7 @@ export default class exportForm extends React.Component {
         this.setLoading();
         const reqParams = JSON.parse(localStorage.getItem('chainProvider'));
         const requests = BramblJS.Requests(reqParams.requests.url, reqParams.requests.headers['x-api-key']);
+        // eslint-disable-next-line no-unused-vars
         let response;
         try {
             await requests.chainInfo().then(function (res) {

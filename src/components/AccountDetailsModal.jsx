@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Icon, Button, Modal } from 'semantic-ui-react';
+import { Header, Button } from 'semantic-ui-react';
 import QRCode from 'qrcode.react';
 import Copy from './copyFull';
 import ExportKeyForm from './exportForm';

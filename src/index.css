@@ -24,7 +24,10 @@ table {
     color: rgb(63, 63, 63);
     cursor: pointer;
 }
-
+.ui.floated.header,
+.ui[class*='left floated'].header {
+    margin-bottom: 0 !important;
+}
 #sidebar {
     background-color: #f4fcfb;
 }
